@@ -21,13 +21,12 @@ export async function getUserData(): Promise<UserInfo | null> {
     if (!token) return null;
 
     // Fetch session from Better Auth
-    const res = await fetch("http://localhost:5000/api/auth/get-session", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/get-session`, {
       headers: {
         Cookie: cookieStore.toString(),
       },
     });
     const CookieUser = await res.json();
-console.log(CookieUser.user)
     // session.data?.user can be undefined
     const userData = CookieUser.user;
     if (!userData) return null;

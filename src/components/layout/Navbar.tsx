@@ -38,6 +38,7 @@ import Logo from "../logo/logo";
 import { UserRole } from "../../../types/role.type";
 import { authClient } from "@/lib/auth-client";
 import { SessionUser } from "../../../types/sessionUser";
+import { toast } from "sonner";
 
 interface MenuItem {
   title: string;
@@ -103,7 +104,6 @@ const Navbar = ({
   // ✅ real session user
   const sessionUser: SessionUser = data?.user;
 
-  console.log(sessionUser)
 
   // if you store role inside session user
   const role = (sessionUser?.role as UserRole ) ?? undefined;
@@ -137,7 +137,7 @@ const Navbar = ({
       router.push("/");
       router.refresh();
     } catch (err) {
-      console.log("Logout error:", err);
+      toast.success("Logout error: ");
     }
   };
 

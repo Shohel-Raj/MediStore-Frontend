@@ -27,9 +27,12 @@ import {
 import { LayoutDashboard, LogOut, User } from "lucide-react";
 import { UserRole } from "../../../types/role.type";
 import { getDashboardUrl } from "./Navbar";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
 
 export function DashboardTopbar({
   user,
+  onLogout
 }: {
   user: {
     name?: string;
@@ -37,6 +40,7 @@ export function DashboardTopbar({
     image?: string;
     role: UserRole;
   };
+  onLogout: () => Promise<void> | void
 }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -61,10 +65,15 @@ export function DashboardTopbar({
     "U";
 
   const handleLogout = async () => {
-    // 🔥 replace with real logout
-    console.log("logout");
-    router.push("/");
-    router.refresh();
+     try {
+          await authClient.signOut();
+    
+          if (onLogout) await onLogout();
+          router.push("/");
+          router.refresh();
+        } catch (err) {
+          toast.success("Logout error: ");
+        }
   };
 
   return (

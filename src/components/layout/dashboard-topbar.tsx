@@ -25,6 +25,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { LayoutDashboard, LogOut, User } from "lucide-react";
+import { UserRole } from "../../../types/role.type";
+import { getDashboardUrl } from "./Navbar";
 
 export function DashboardTopbar({
   user,
@@ -33,11 +35,12 @@ export function DashboardTopbar({
     name?: string;
     email?: string;
     image?: string;
-    role: "admin" | "seller" | "user";
+    role: UserRole;
   };
 }) {
   const pathname = usePathname();
   const router = useRouter();
+
 
   // Breadcrumb from pathname
   const segments = pathname
@@ -78,7 +81,7 @@ export function DashboardTopbar({
           <BreadcrumbList>
             <BreadcrumbItem className="hidden md:block">
               <BreadcrumbLink asChild>
-                <Link href="/dashboard" className="flex items-center gap-2">
+                <Link href={getDashboardUrl(user.role ?? "user")} className="flex items-center gap-2">
                   <LayoutDashboard className="h-4 w-4" />
                   Dashboard
                 </Link>

@@ -21,12 +21,13 @@ import { adminRoutes } from "../../../routes/adminRoutes";
 import { sellerRoutes } from "../../../routes/sellerRoutes";
 import { userRoutes } from "../../../routes/userRoutes";
 import Logo from "../logo/logo";
+import { UserRole } from "../../../types/role.type";
 
 export function AppSidebar({
   user,
 }: {
   user: {
-    role: "admin" | "seller" | "user";
+    role: UserRole;
     name?: string;
     email?: string;
   };
@@ -36,13 +37,13 @@ export function AppSidebar({
   let routes: Route[] = [];
 
   switch (user.role) {
-    case "admin":
+    case "ADMIN":
       routes = adminRoutes;
       break;
-    case "seller":
+    case "SELLER":
       routes = sellerRoutes;
       break;
-    case "user":
+    case "USER":
       routes = userRoutes;
       break;
     default:
@@ -58,8 +59,7 @@ export function AppSidebar({
       {/* Header */}
       <SidebarHeader className="px-3 py-4">
         <Link href="/" className="flex items-center gap-2">
-          {/* <span className="text-xl">💊</span>
-          <span className="text-sm font-semibold tracking-tight">MediStore</span> */}
+        
           <Logo/>
         </Link>
       </SidebarHeader>

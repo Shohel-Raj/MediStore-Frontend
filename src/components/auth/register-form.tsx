@@ -20,7 +20,9 @@ import {
   Sparkles,
   ShieldCheck,
   Pill,
+  CheckCircle2,
 } from "lucide-react";
+
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 
@@ -39,7 +41,12 @@ export default function RegisterForm() {
 
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirm, setShowConfirm] = React.useState(false);
+
   const [isLoading, setIsLoading] = React.useState(false);
+  const [resendLoading, setResendLoading] = React.useState(false);
+
+  // show "verify email" message after successful signup
+  const [signupDone, setSignupDone] = React.useState(false);
 
   const [form, setForm] = React.useState<RegisterFormState>({
     name: "",
@@ -59,32 +66,72 @@ export default function RegisterForm() {
       setForm((prev) => ({ ...prev, [key]: e.target.value }));
     };
 
+  /** -----------------------------
+   * Google Sign Up/Login
+   * - role NOT required
+   * - no redirect on failure
+   * -----------------------------
+   */
   const handleGoogleRegister = async () => {
-    // if (!form.role) {
-    //   toast.error("Must Sellect user type");
-    //   return;
-    // }
-
     try {
       setIsLoading(true);
 
-       const data = authClient.signIn.social({
-      provider: "google",
-      callbackURL: "http://localhost:3000",
-    });
+      const { error } = await authClient.signIn.social({
+        provider: "google",
+        callbackURL: `${window.location.origin}/dashboard`,
+      });
 
-    console.log(data);
+      if (error) {
+        toast.error(error.message || "Google login failed");
+        return;
+      }
 
-      toast.error("Google signup successful");
-
-      router.push("/dashboard");
+      // usually redirects automatically
+      toast.success("Google login successful!");
     } catch {
-      toast.error("Google signup failed");
+      toast.error("Google login failed");
     } finally {
       setIsLoading(false);
     }
   };
 
+  /** -----------------------------
+   * Resend verification email
+   * -----------------------------
+   */
+  const handleResendVerifyEmail = async () => {
+    if (!form.email) {
+      toast.error("Please enter your email first");
+      return;
+    }
+
+    try {
+      setResendLoading(true);
+
+      const { error } = await authClient.sendVerificationEmail({
+        email: form.email,
+      });
+
+      if (error) {
+        toast.error(error.message || "Failed to send verification email");
+        return;
+      }
+
+      toast.success("Verification email sent! Check inbox/spam.");
+    } catch {
+      toast.error("Failed to send verification email");
+    } finally {
+      setResendLoading(false);
+    }
+  };
+
+  /** -----------------------------
+   * Email/Password Registration
+   * - role REQUIRED
+   * - after success: show verify email UI
+   * - no redirect to dashboard
+   * -----------------------------
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -94,70 +141,75 @@ export default function RegisterForm() {
     }
 
     if (!form.name || !form.email || !form.password || !form.confirmPassword) {
-      toast.error("Missing fields");
+      toast.error("All fields are required");
       return;
     }
 
     if (form.password.length < 6) {
-      toast.error("Weak password");
+      toast.error("Password must be at least 6 characters");
       return;
     }
 
     if (form.password !== form.confirmPassword) {
-      toast.error("Password mismatch");
+      toast.error("Passwords do not match");
       return;
     }
 
     try {
       setIsLoading(true);
 
-      // ✅ send role to backend
       const payload = {
         name: form.name,
         email: form.email,
         password: form.password,
-        role: form.role, // "USER" | "SELLER"
+        role: form.role,
       };
 
-      // TODO: replace with your API call
-      // await fetch("/api/auth/register", { method:"POST", body: JSON.stringify(payload) ... })
-      const { data, error } = await authClient.signUp.email(payload);
-      console.log(data)
+      const { error } = await authClient.signUp.email(payload);
 
-      toast.success("Account created ");
+      if (error) {
+        toast.error(error.message || "Registration failed");
+        return;
+      }
 
-      router.push("/login");
+      toast.success("Account created! Please verify your email.");
+      setSignupDone(true);
+
+      // optional: send verification email again (only if your backend supports it)
+      // await authClient.sendVerificationEmail({ email: form.email });
+
+      // ❌ don't redirect to dashboard
+      // user must verify email first
     } catch {
-      toast.error("Registration failed");
+      toast.error("Something went wrong");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <main className="relative min-h-screen overflow-hidden">
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-background via-background to-muted/40" />
+    <main className="relative min-h-screen overflow-hidden bg-background">
       <FloatingIcons />
 
       <div className="container mx-auto grid min-h-screen items-center px-4 py-10 lg:grid-cols-2 lg:gap-10">
         {/* Left marketing */}
         <div className="hidden lg:block">
-          <div className="max-w-xl">
+          <div className="max-w-xl space-y-6">
             <div className="inline-flex items-center gap-2 rounded-full border bg-background/60 px-4 py-2 text-sm shadow-sm backdrop-blur">
               <Sparkles className="h-4 w-4" />
               <span className="font-medium">Join MediStore</span>
             </div>
 
-            <h1 className="mt-6 text-4xl font-bold tracking-tight">
-              Register & start using MediStore
+            <h1 className="text-4xl font-bold tracking-tight">
+              Register & start your journey
             </h1>
 
-            <p className="mt-4 text-muted-foreground">
+            <p className="text-muted-foreground">
               Customers can buy OTC medicines. Sellers can manage inventory and
               fulfill orders.
             </p>
 
-            <div className="mt-8 grid gap-3">
+            <div className="grid gap-3">
               <FeatureLine
                 icon={<ShieldCheck className="h-5 w-5" />}
                 title="Secure roles"
@@ -180,7 +232,7 @@ export default function RegisterForm() {
                 Create account
               </CardTitle>
               <p className="text-sm text-muted-foreground">
-                Choose account type first, then register.
+                Select account type first, then register.
               </p>
             </CardHeader>
 
@@ -196,7 +248,6 @@ export default function RegisterForm() {
                   <User className="h-4 w-4" />
                   User
                 </Button>
-
                 <Button
                   type="button"
                   variant={form.role === "SELLER" ? "default" : "outline"}
@@ -208,18 +259,10 @@ export default function RegisterForm() {
                 </Button>
               </div>
 
-              {/* If role not selected show helper */}
-              {!form.role ? (
+              {!form.role && (
                 <div className="rounded-xl border bg-muted/40 p-4 text-sm text-muted-foreground">
-                  👆 Select <span className="font-medium">User</span> or{" "}
+                  Select <span className="font-medium">User</span> or{" "}
                   <span className="font-medium">Seller</span> to continue.
-                </div>
-              ) : (
-                <div className="rounded-xl border bg-muted/40 p-4 text-sm">
-                  You are registering as:{" "}
-                  <span className="font-semibold">
-                    {form.role === "USER" ? "User" : "Seller"}
-                  </span>
                 </div>
               )}
 
@@ -229,7 +272,7 @@ export default function RegisterForm() {
                 variant="outline"
                 className="w-full gap-2"
                 onClick={handleGoogleRegister}
-                disabled={isLoading || !form.role}
+                disabled={isLoading || resendLoading}
               >
                 {isLoading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -247,110 +290,115 @@ export default function RegisterForm() {
                 <Separator className="flex-1" />
               </div>
 
-              {/* Form appears only after role selection */}
+              {/* Email registration form */}
               {form.role && (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Full Name</label>
-                    <div className="relative">
-                      <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                      <Input
+                <>
+                  {signupDone ? (
+                    <div className="space-y-4 rounded-2xl border bg-muted/30 p-5">
+                      <div className="flex items-center gap-2 font-semibold">
+                        <CheckCircle2 className="h-5 w-5" />
+                        Verify your email
+                      </div>
+
+                      <p className="text-sm text-muted-foreground">
+                        We created your account. Please check your inbox and
+                        click the verification link.
+                      </p>
+
+                      <div className="flex flex-col gap-2">
+                        <Button
+                          type="button"
+                          variant="secondary"
+                          onClick={handleResendVerifyEmail}
+                          disabled={resendLoading}
+                        >
+                          {resendLoading ? (
+                            <>
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              Sending...
+                            </>
+                          ) : (
+                            "Resend verification email"
+                          )}
+                        </Button>
+
+                        <Button
+                          type="button"
+                          onClick={() => router.push("/login")}
+                        >
+                          Go to Login
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                      <InputField
+                        label="Full Name"
+                        icon={<User className="h-4 w-4" />}
                         value={form.name}
                         onChange={handleChange("name")}
                         placeholder="Your name"
-                        className="pl-10"
-                        autoComplete="name"
                       />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Email</label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                      <Input
+                      <InputField
+                        label="Email"
+                        type="email"
+                        icon={<Mail className="h-4 w-4" />}
                         value={form.email}
                         onChange={handleChange("email")}
-                        type="email"
                         placeholder="you@example.com"
-                        className="pl-10"
-                        autoComplete="email"
                       />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Password</label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                      <Input
+                      <InputField
+                        label="Password"
+                        icon={<Lock className="h-4 w-4" />}
+                        type={showPassword ? "text" : "password"}
                         value={form.password}
                         onChange={handleChange("password")}
-                        type={showPassword ? "text" : "password"}
                         placeholder="••••••••"
-                        className="pl-10 pr-10"
-                        autoComplete="new-password"
+                        showToggle={true}
+                        show={showPassword}
+                        setShow={setShowPassword}
                       />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword((p) => !p)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                      >
-                        {showPassword ? (
-                          <EyeOff className="h-4 w-4" />
-                        ) : (
-                          <Eye className="h-4 w-4" />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">
-                      Confirm Password
-                    </label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                      <Input
+                      <InputField
+                        label="Confirm Password"
+                        icon={<Lock className="h-4 w-4" />}
+                        type={showConfirm ? "text" : "password"}
                         value={form.confirmPassword}
                         onChange={handleChange("confirmPassword")}
-                        type={showConfirm ? "text" : "password"}
                         placeholder="••••••••"
-                        className="pl-10 pr-10"
-                        autoComplete="new-password"
+                        showToggle={true}
+                        show={showConfirm}
+                        setShow={setShowConfirm}
                       />
-                      <button
-                        type="button"
-                        onClick={() => setShowConfirm((p) => !p)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+
+                      <Button
+                        type="submit"
+                        className="w-full"
+                        disabled={isLoading}
                       >
-                        {showConfirm ? (
-                          <EyeOff className="h-4 w-4" />
+                        {isLoading ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Creating account...
+                          </>
                         ) : (
-                          <Eye className="h-4 w-4" />
+                          `Register as ${
+                            form.role === "USER" ? "USER" : "Seller"
+                          }`
                         )}
-                      </button>
-                    </div>
-                  </div>
+                      </Button>
 
-                  <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Creating account...
-                      </>
-                    ) : (
-                      `Register as ${form.role === "USER" ? "User" : "Seller"}`
-                    )}
-                  </Button>
-
-                  <p className="text-center text-sm text-muted-foreground">
-                    Already have an account?{" "}
-                    <Link href="/login" className="font-medium hover:underline">
-                      Login
-                    </Link>
-                  </p>
-                </form>
+                      <p className="text-center text-sm text-muted-foreground">
+                        Already have an account?{" "}
+                        <Link
+                          href="/login"
+                          className="font-medium hover:underline"
+                        >
+                          Login
+                        </Link>
+                      </p>
+                    </form>
+                  )}
+                </>
               )}
             </CardContent>
           </Card>
@@ -360,7 +408,62 @@ export default function RegisterForm() {
   );
 }
 
-/* ------------------ Helpers ------------------ */
+/* ------------------ Components ------------------ */
+
+function InputField({
+  label,
+  icon,
+  value,
+  onChange,
+  placeholder,
+  type = "text",
+  showToggle,
+  show,
+  setShow,
+}: {
+  label: string;
+  icon: React.ReactNode;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string;
+  type?: string;
+  showToggle?: boolean;
+  show?: boolean;
+  setShow?: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
+  return (
+    <div className="space-y-2">
+      <label className="text-sm font-medium">{label}</label>
+      <div className="relative">
+        {icon && (
+          <div className="absolute left-3 top-1/2 -translate-y-1/2">
+            {icon}
+          </div>
+        )}
+        <Input
+          type={type}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          className="pl-10 pr-10"
+        />
+        {showToggle && setShow && (
+          <button
+            type="button"
+            onClick={() => setShow((prev) => !prev)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+          >
+            {show ? (
+              <EyeOff className="h-4 w-4" />
+            ) : (
+              <Eye className="h-4 w-4" />
+            )}
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
 
 function FeatureLine({
   icon,
@@ -413,6 +516,8 @@ function GoogleIcon({ className }: { className?: string }) {
   );
 }
 
+/* ---------------- Floating animated icons ---------------- */
+
 function FloatingIcons() {
   const icons = [
     <Pill key="pill" className="h-6 w-6" />,
@@ -423,7 +528,7 @@ function FloatingIcons() {
   ];
 
   return (
-    <>
+    <div className="pointer-events-none absolute inset-0 -z-10 opacity-25">
       <style jsx global>{`
         @keyframes floaty {
           0% {
@@ -441,32 +546,30 @@ function FloatingIcons() {
         }
       `}</style>
 
-      <div className="pointer-events-none absolute inset-0 -z-10 opacity-25">
-        {Array.from({ length: 14 }).map((_, i) => {
-          const Icon = icons[i % icons.length];
-          const left = `${(i * 7) % 100}%`;
-          const top = `${(i * 11) % 100}%`;
-          const delay = `${(i % 6) * 0.3}s`;
-          const duration = `${7 + (i % 6)}s`;
+      {Array.from({ length: 14 }).map((_, i) => {
+        const Icon = icons[i % icons.length];
+        const left = `${(i * 7) % 100}%`;
+        const top = `${(i * 11) % 100}%`;
+        const delay = `${(i % 6) * 0.3}s`;
+        const duration = `${7 + (i % 6)}s`;
 
-          return (
-            <div
-              key={i}
-              className="absolute animate-float"
-              style={{
-                left,
-                top,
-                animationDelay: delay,
-                animationDuration: duration,
-              }}
-            >
-              <div className="rounded-2xl border bg-background/40 p-3 shadow-sm backdrop-blur">
-                {Icon}
-              </div>
+        return (
+          <div
+            key={i}
+            className="absolute animate-float"
+            style={{
+              left,
+              top,
+              animationDelay: delay,
+              animationDuration: duration,
+            }}
+          >
+            <div className="rounded-2xl border bg-background/40 p-3 shadow-sm backdrop-blur">
+              {Icon}
             </div>
-          );
-        })}
-      </div>
-    </>
+          </div>
+        );
+      })}
+    </div>
   );
 }

@@ -22,6 +22,7 @@ import {
   Pill,
   LogIn,
 } from "lucide-react";
+
 import { authClient } from "@/lib/auth-client";
 
 export default function LoginForm() {
@@ -33,15 +34,27 @@ export default function LoginForm() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
+  // for resend verification email UI
+  const [showResend, setShowResend] = React.useState(false);
+  const [resendLoading, setResendLoading] = React.useState(false);
+
   const handleGoogleLogin = async () => {
     try {
       setIsLoading(true);
 
-      const data = authClient.signIn.social({
+      const { error } = await authClient.signIn.social({
         provider: "google",
-        callbackURL: "http://localhost:3000",
+        callbackURL: window.location.origin, // safer than hardcoding localhost
       });
-      console.log(data);
+
+      if (error) {
+        toast.error(error.message || "Google login failed");
+        return;
+      }
+
+      // NOTE:
+      // BetterAuth social login often redirects automatically
+      // but if it returns normally, then redirect manually
       toast.success("Login successful");
       router.push("/dashboard");
     } catch {
@@ -51,8 +64,35 @@ export default function LoginForm() {
     }
   };
 
+  const handleResendVerifyEmail = async () => {
+    if (!email) {
+      toast.error("Please enter your email first");
+      return;
+    }
+
+    try {
+      setResendLoading(true);
+
+      const { error } = await authClient.sendVerificationEmail({
+        email,
+      });
+
+      if (error) {
+        toast.error(error.message || "Failed to send verification email");
+        return;
+      }
+
+      toast.success("Verification email sent! Check inbox/spam.");
+    } catch {
+      toast.error("Failed to send verification email");
+    } finally {
+      setResendLoading(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setShowResend(false);
 
     if (!email || !password) {
       toast.error("Please fill all fields");
@@ -62,22 +102,26 @@ export default function LoginForm() {
     try {
       setIsLoading(true);
 
-      // TODO: Replace with your API call
-      // const res = await fetch("/api/auth/login", {...})
+      const { data, error } = await authClient.signIn.email({
+        email,
+        password,
+        callbackURL: window.location.origin,
+      });
 
-      // fake validation demo
-      const isValid = password.length >= 6;
-
-      if (!isValid) {
-        toast.error("Invalid credentials");
+      if (error) {
+        toast.error(error.message || "Invalid credentials");
         return;
       }
-      const value={
-        email,password
-      }
-        const { data, error } = await authClient.signIn.email(value);
 
-      console.log(data);
+      // ✅ email verification check
+      const emailVerified = data?.user?.emailVerified;
+
+      if (emailVerified === false) {
+        toast.error("Please verify your email first.");
+        setShowResend(true); // show resend button
+        return; // ❌ don't redirect
+      }
+
       toast.success("Login successful");
       router.push("/dashboard");
     } catch {
@@ -89,7 +133,7 @@ export default function LoginForm() {
 
   return (
     <main className="relative min-h-screen overflow-hidden">
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-background via-background to-muted/40" />
+      <div className="absolute inset-0 -z-10 bg-linear-to-b from-background via-background to-muted/40" />
       <FloatingIcons />
 
       <div className="container mx-auto grid min-h-screen items-center px-4 py-10 lg:grid-cols-2 lg:gap-10">
@@ -143,7 +187,7 @@ export default function LoginForm() {
                 variant="outline"
                 className="w-full gap-2"
                 onClick={handleGoogleLogin}
-                disabled={isLoading}
+                disabled={isLoading || resendLoading}
               >
                 {isLoading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -204,7 +248,31 @@ export default function LoginForm() {
                   </div>
                 </div>
 
-                <Button type="submit" className="w-full" disabled={isLoading}>
+                {/* show resend verify button only if email not verified */}
+                {showResend && (
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    className="w-full"
+                    onClick={handleResendVerifyEmail}
+                    disabled={resendLoading || isLoading}
+                  >
+                    {resendLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Sending verification email...
+                      </>
+                    ) : (
+                      "Resend Verification Email"
+                    )}
+                  </Button>
+                )}
+
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={isLoading || resendLoading}
+                >
                   {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />

@@ -104,7 +104,7 @@ export default function HeroSlider() {
                 />
 
                 {/* Theme-friendly overlay */}
-                <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/70 to-background/20 dark:from-background/95 dark:via-background/70 dark:to-background/30" />
+                <div className="absolute inset-0 bg-linear-to-b from-background/95 via-background/70 to-background/20 dark:from-background/95 dark:via-background/70 dark:to-background/30" />
 
                 {/* Content */}
                 <div className="absolute inset-0">
@@ -149,7 +149,7 @@ export default function HeroSlider() {
                           className={cn(
                             "inline-flex h-11 items-center justify-center rounded-xl bg-primary px-6 text-sm font-medium text-primary-foreground shadow transition hover:opacity-90",
                             // full width on very small screens
-                            "w-full max-w-[260px] sm:w-auto"
+                            "w-full max-w-65 sm:w-auto"
                           )}
                         >
                           {slide.ctaPrimary.label}
@@ -159,7 +159,7 @@ export default function HeroSlider() {
                           href={slide.ctaSecondary.href}
                           className={cn(
                             "inline-flex h-11 items-center justify-center rounded-xl border border-border bg-background px-6 text-sm font-medium shadow-sm transition hover:bg-accent",
-                            "w-full max-w-[260px] sm:w-auto"
+                            "w-full max-w-65 sm:w-auto"
                           )}
                         >
                           {slide.ctaSecondary.label}

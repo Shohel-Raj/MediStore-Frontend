@@ -4,6 +4,7 @@ import React, { useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import Swal from "sweetalert2";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -28,26 +29,37 @@ export default function SellerProductsTableClient({
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  const handleDelete = (id: string) => {
-    const ok = confirm("Are you sure you want to delete this product?");
-    if (!ok) return;
-
-    startTransition(async () => {
-      const { error } = await sellerProductServiceClient.deleteProductById(id);
-
-      if (error) {
-        toast.error(error.message);
-        return;
-      }
-
-      toast.success("Product deleted successfully");
-      router.refresh();
+  const handleDelete = async (id: string) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
     });
+
+    if (result.isConfirmed) {
+      startTransition(async () => {
+        const { error } =
+          await sellerProductServiceClient.deleteProductById(id);
+
+        if (error) {
+          toast.error(error.message);
+          return;
+        }
+
+        toast.success("Product deleted successfully");
+        router.refresh();
+      });
+
+      Swal.fire("Deleted!", "Your item has been deleted.", "success");
+    }
   };
 
   return (
     <div className="rounded-xl border bg-background overflow-hidden">
-      <Table >
+      <Table>
         <TableHeader>
           <TableRow>
             <TableHead>#</TableHead>

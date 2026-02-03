@@ -58,10 +58,10 @@ export function AppSidebar({
     <Sidebar collapsible="icon">
       {/* Header */}
       <SidebarHeader className="px-3 py-4">
-        <Link href="/" className="flex items-center gap-2">
+        <div className="flex items-center gap-2">
         
           <Logo/>
-        </Link>
+        </div>
       </SidebarHeader>
 
       {/* Content */}

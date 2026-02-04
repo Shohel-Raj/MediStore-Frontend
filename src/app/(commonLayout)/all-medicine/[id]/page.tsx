@@ -121,13 +121,15 @@ export default async function ProductDetailsPage({
               {/* Client Button */}
               <div className="mt-4">
                 <AddToCartButton
-                  product={{
-                    id: product.id,
-                    name: product.name,
-                    image: product.image || "",
-                    price: finalPrice,
-                    stock: product.stock,
-                  }}
+                 productId={id}
+
+                  // product={{
+                  //   id: product.id,
+                  //   name: product.name,
+                  //   image: product.image || "",
+                  //   price: finalPrice,
+                  //   stock: product.stock,
+                  // }}
                 />
               </div>
 

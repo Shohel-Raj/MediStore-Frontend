@@ -26,13 +26,15 @@ export default async function ProductDetailsPage({
 }: {
   params: { id: string };
 }) {
-  const product: Product = await productService.getProductById(params.id);
+  const {id}= await params
+  console.log(id)
+  const product: Product = await productService.getProductById(id);
 
   return (
     <div className="max-w-5xl mx-auto py-8 space-y-6">
       <div className="flex items-center gap-4">
         <Link
-          href="/products"
+          href="/all-medicine"
           className="text-blue-600 hover:underline text-sm"
         >
           ← Back to Products

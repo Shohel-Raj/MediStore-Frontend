@@ -76,35 +76,56 @@ export const productService = {
 
       const data = await res.json();
       if (!res.ok) {
-        return { data: [], pagination: undefined, error: data?.message || "Failed to fetch products" };
+        return {
+          data: [],
+          pagination: undefined,
+          error: data?.message || "Failed to fetch products",
+        };
       }
 
-      return { data: data.data || [], pagination: data.pagination, error: null };
+      return {
+        data: data.data || [],
+        pagination: data.pagination,
+        error: null,
+      };
     } catch (err: any) {
-      return { data: [], pagination: undefined, error: err.message || "Something went wrong" };
+      return {
+        data: [],
+        pagination: undefined,
+        error: err.message || "Something went wrong",
+      };
     }
   },
 
   // --------------- GET SINGLE PRODUCT ----------------
- getProductById: async (productId: string) => {
-  try {
-    const cookieStore = await cookies();
-    const res = await fetch(`${API_URL}/api/v1/medicines/${productId}`, {
-      method: "GET",
-      headers: { Cookie: cookieStore.toString() },
-      next: { tags: ["publicProducts"], revalidate: 10 },
-    });
+  getProductById: async (productId: string) => {
+    try {
+      const cookieStore = await cookies();
+      const res = await fetch(`${API_URL}/api/v1/medicines/${productId}`, {
+        method: "GET",
+        headers: { Cookie: cookieStore.toString() },
+        next: { tags: ["publicProducts"], revalidate: 10 },
+      });
 
-    if (!res.ok) {
-      const errorData = await res.json().catch(() => ({}));
-      const message = (errorData && (errorData as any).message) || "Failed to fetch product";
-      throw new Error(message);
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        const message =
+          (errorData && (errorData as any).message) ||
+          "Failed to fetch product";
+        throw new Error(message);
+      }
+      const data = await res.json();
+
+      if (!res.ok) {
+        return {
+          data: null,
+          error: { message: data?.message || "Failed to fetch product" },
+        };
+      }
+
+      return { data, error: null };
+    } catch (err: any) {
+      throw new Error(err?.message || "Something went wrong");
     }
-
-    const product = await res.json();
-    return product as Product;
-  } catch (err: any) {
-    throw new Error(err?.message || "Something went wrong");
-  }
-}
+  },
 };

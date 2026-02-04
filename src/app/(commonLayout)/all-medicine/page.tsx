@@ -5,6 +5,11 @@ import { productService } from "@/services/product/productService.server";
 
 export const dynamic = "force-dynamic";
 
+const isValidImageUrl = (url?: string | null) => {
+  if (!url) return false;
+  return url.startsWith("http://") || url.startsWith("https://") || url.startsWith("/");
+};
+
 type Product = {
   id: string;
   name: string;
@@ -37,19 +42,20 @@ export default async function ProductsPage({
     page?: string;
   };
 }) {
-  const page = parseInt(searchParams?.page || "1");
+   const sp = await searchParams;
+  const page = parseInt(sp?.page || "1");
   const limit = 12;
-
   const { data: products, pagination } = await productService.getAllProducts({
-    search: searchParams?.search,
-    manufacturer: searchParams?.manufacturer,
-    dosageForm: searchParams?.dosageForm,
+    search: sp?.search,
+    manufacturer: sp?.manufacturer,
+    dosageForm: sp?.dosageForm,
     page,
     limit,
     skip: (page - 1) * limit,
-    sortBy: (searchParams?.sortBy as any) || "createdAt",
-    sortOrder: searchParams?.sortOrder || "desc",
+    sortBy: (sp?.sortBy as any) || "createdAt",
+    sortOrder: sp?.sortOrder || "desc",
   });
+
 
   return (
     <div className="max-w-7xl mx-auto py-8 space-y-6">
@@ -57,9 +63,9 @@ export default async function ProductsPage({
 
       {/* Client-side Filter/Search */}
       <ProductFilterClient
-        searchParams={searchParams}
-        totalPages={pagination.totalPages}
-        currentPage={pagination.page}
+        searchParams={sp}
+        totalPages={pagination?.totalPages}
+        currentPage={pagination?.page}
       />
 
       {/* Products Grid */}
@@ -70,7 +76,7 @@ export default async function ProductsPage({
             href={`/all-medicine/${product.id}`}
             className="border rounded-xl p-4 hover:shadow-md transition"
           >
-            {product.image ? (
+            {isValidImageUrl(product.image) ? (
               <img
                 src={product.image}
                 alt={product.name}

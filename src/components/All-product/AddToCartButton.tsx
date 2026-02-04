@@ -7,11 +7,13 @@ import Swal from "sweetalert2";
 type AddToCartButtonProps = {
   productId: string;
   disabled?: boolean;
+  quantity?: number; // optional (default 1)
 };
 
 export default function AddToCartButton({
   productId,
   disabled = false,
+  quantity = 1,
 }: AddToCartButtonProps) {
   const [loading, setLoading] = useState(false);
 
@@ -30,14 +32,17 @@ export default function AddToCartButton({
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
-          body: JSON.stringify({ productId, quantity: 1 }),
+          body: JSON.stringify({
+            productId,
+            quantity,
+          }),
         }
       );
 
       const data = await res.json();
 
       if (!res.ok) {
-        // login required
+        // 🔒 login required
         if (res.status === 401 || res.status === 403) {
           await Swal.fire({
             icon: "warning",
@@ -49,11 +54,14 @@ export default function AddToCartButton({
           return;
         }
 
-        toast.error(data?.message || "Failed to add to cart!");
+        toast.error(data?.message || "Failed to add item to cart!");
         return;
       }
 
-      toast.success("Added to cart successfully 🎉");
+      toast.success("Added to cart successfully 🛒");
+
+      // 🔥 notify navbar cart badge to refresh
+      window.dispatchEvent(new Event("cart-updated"));
     } catch (err) {
       console.error(err);
       toast.error("Network error! Please try again.");

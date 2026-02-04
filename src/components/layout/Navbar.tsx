@@ -39,6 +39,7 @@ import { UserRole } from "../../../types/role.type";
 import { authClient } from "@/lib/auth-client";
 import { SessionUser } from "../../../types/sessionUser";
 import { toast } from "sonner";
+import CartIconButton from "../cart/CartIconButton";
 
 interface MenuItem {
   title: string;
@@ -105,15 +106,14 @@ const Navbar = ({
   // ✅ real session user
   const sessionUser: SessionUser = data?.user;
 
-
   // if you store role inside session user
-  const role = (sessionUser?.role as UserRole ) ?? undefined;
+  const role = (sessionUser?.role as UserRole) ?? undefined;
 
-// const finalMenu = [
-//   ...menu, // base menu
-//   ...(role ? [{ title: "Dashboard", url: getDashboardUrl(role) }] : []),
-// ];
- 
+  // const finalMenu = [
+  //   ...menu, // base menu
+  //   ...(role ? [{ title: "Dashboard", url: getDashboardUrl(role) }] : []),
+  // ];
+
   const isActive = (url: string) => {
     if (url === "/") return pathname === "/";
     return pathname.startsWith(url);
@@ -161,7 +161,7 @@ const Navbar = ({
                       "hover:bg-muted hover:text-accent-foreground",
                       isActive(item.url)
                         ? "bg-muted text-foreground"
-                        : "text-muted-foreground"
+                        : "text-muted-foreground",
                     )}
                   >
                     <Link href={item.url}>{item.title}</Link>
@@ -170,6 +170,7 @@ const Navbar = ({
               ))}
             </NavigationMenuList>
           </NavigationMenu>
+          {sessionUser && <CartIconButton />}
 
           <ModeToggle />
 
@@ -197,6 +198,7 @@ const Navbar = ({
         {/* Mobile */}
         <div className="flex items-center gap-2 lg:hidden">
           <ModeToggle />
+                {sessionUser && <CartIconButton />}
 
           <Sheet>
             <SheetTrigger asChild>
@@ -216,7 +218,9 @@ const Navbar = ({
                       height={32}
                       className="dark:invert"
                     />
-                    <span className="text-base font-semibold">{logo.title}</span>
+                    <span className="text-base font-semibold">
+                      {logo.title}
+                    </span>
                   </Link>
                 </SheetTitle>
               </SheetHeader>
@@ -232,7 +236,7 @@ const Navbar = ({
                         "rounded-md px-3 py-2 text-sm font-medium transition-colors",
                         isActive(item.url)
                           ? "bg-muted text-foreground"
-                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                          : "text-muted-foreground hover:bg-muted hover:text-foreground",
                       )}
                     >
                       {item.title}
@@ -307,7 +311,12 @@ function UserAvatarMenu({
   user,
   onLogout,
 }: {
-  user: { name?: string | null; email?: string | null; image?: string | null ;role:UserRole};
+  user: {
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+    role: UserRole;
+  };
   onLogout: () => void;
 }) {
   const getInitials = (name?: string | null, email?: string | null) => {
@@ -327,7 +336,9 @@ function UserAvatarMenu({
         <button className="flex items-center gap-2 rounded-full outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
           <Avatar className="h-9 w-9">
             <AvatarImage src={user.image ?? ""} alt={user.name ?? "User"} />
-            <AvatarFallback>{getInitials(user.name, user.email)}</AvatarFallback>
+            <AvatarFallback>
+              {getInitials(user.name, user.email)}
+            </AvatarFallback>
           </Avatar>
         </button>
       </DropdownMenuTrigger>
@@ -350,9 +361,7 @@ function UserAvatarMenu({
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
-          <Link href={getDashboardUrl(user.role ?? "user")}>
-                        Dashboard
-                      </Link>
+          <Link href={getDashboardUrl(user.role ?? "user")}>Dashboard</Link>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />

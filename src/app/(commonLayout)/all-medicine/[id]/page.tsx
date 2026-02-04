@@ -39,7 +39,7 @@ export default async function ProductDetailsPage({
   const finalPrice = hasDiscount ? product.discountPrice! : product.price;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#F9FAFB] to-white">
+    <div className="min-h-screen bg-linear-to-b from-[#F9FAFB] to-white">
       <div className="max-w-6xl mx-auto px-4 md:px-6 py-8">
         {/* Top Bar */}
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -82,7 +82,7 @@ export default async function ProductDetailsPage({
 
           {/* Price + Add to Cart */}
           <div className="w-full md:w-auto">
-            <div className="rounded-2xl border bg-white shadow-sm p-4 md:p-5 min-w-[280px]">
+            <div className="rounded-2xl border bg-white shadow-sm p-4 md:p-5 min-w-70">
               <p className="text-xs text-gray-500 font-medium">Price</p>
 
               <div className="flex items-end gap-2 mt-1">
@@ -149,10 +149,10 @@ export default async function ProductDetailsPage({
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-[260px] md:h-[340px] object-cover"
+                  className="w-full h-65 md:h-85 object-cover"
                 />
               ) : (
-                <div className="w-full h-[260px] md:h-[340px] flex items-center justify-center bg-gray-50">
+                <div className="w-full h-65 md:h-85 flex items-center justify-center bg-gray-50">
                   <p className="text-sm text-gray-500">No image available</p>
                 </div>
               )}

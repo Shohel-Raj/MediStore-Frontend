@@ -115,7 +115,6 @@ export const productService = {
         throw new Error(message);
       }
       const data = await res.json();
-
       if (!res.ok) {
         return {
           data: null,
@@ -123,7 +122,7 @@ export const productService = {
         };
       }
 
-      return { data, error: null };
+      return { data};
     } catch (err: any) {
       throw new Error(err?.message || "Something went wrong");
     }

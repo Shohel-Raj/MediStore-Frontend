@@ -6,7 +6,6 @@ import { toast } from "sonner";
 
 export default function CheckoutButton({
   disabled,
-  subtotal,
   shippingFee,
   discountAmount,
 }: {

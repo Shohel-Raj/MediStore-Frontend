@@ -67,7 +67,7 @@ export default function CartIconButton() {
 
   return (
     <Link
-      href="/cart"
+      href="/dashboard/cart"
       className="relative inline-flex items-center justify-center rounded-full p-2 hover:bg-muted transition"
       aria-label="Cart"
     >

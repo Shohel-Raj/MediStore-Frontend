@@ -43,13 +43,12 @@ export async function getOrderDetails(orderId: string) {
   );
   const data = await res.json();
 
-
  if (!res.ok) {
     return {
       data: [],
       error: data || "Failed to load orders",
     };
   }
-
+console.log(data)
   return data;
 }

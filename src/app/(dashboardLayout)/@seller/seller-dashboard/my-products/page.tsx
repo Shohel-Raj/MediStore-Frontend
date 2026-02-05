@@ -28,7 +28,7 @@ export default async function MyProductsPage() {
         <h1 className="text-2xl font-bold">My Products</h1>
 
         <Button asChild>
-          <Link href="/seller-dashboard/add-product">Add Product</Link>
+          <Link href="/seller-dashboard/create-product">Add Product</Link>
         </Button>
       </div>
 

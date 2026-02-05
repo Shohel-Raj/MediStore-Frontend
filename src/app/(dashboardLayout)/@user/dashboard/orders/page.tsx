@@ -3,7 +3,6 @@ import { getMyOrdersServer } from "@/services/common/order.server";
 
 export default async function OrdersPage() {
   const { data: orders, error } = await getMyOrdersServer();
-  console.log(orders)
   if (error) {
     return (
       <div className="p-6 text-center text-red-500">

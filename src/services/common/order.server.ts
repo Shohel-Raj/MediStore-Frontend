@@ -37,7 +37,7 @@ export async function getOrderDetails(orderId: string) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/v1/order/me/${orderId}`,
     {
-      headers: { Cookie: cookie },
+      headers: { Cookie: cookie || "" },
       cache: "no-store",
     }
   );
@@ -49,6 +49,5 @@ export async function getOrderDetails(orderId: string) {
       error: data || "Failed to load orders",
     };
   }
-console.log(data)
   return data;
 }

@@ -280,7 +280,7 @@ const Navbar = ({
                     </div>
 
                     <Button asChild variant="outline">
-                      <Link href="/profile">Profile</Link>
+                      <Link href="/dashboard/profile">Profile</Link>
                     </Button>
 
                     <Button asChild variant="outline">
@@ -354,7 +354,7 @@ function UserAvatarMenu({
         <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
-          <Link href="/profile" className="flex items-center gap-2">
+          <Link href="/dashboard/profile" className="flex items-center gap-2">
             <User className="h-4 w-4" />
             Profile
           </Link>

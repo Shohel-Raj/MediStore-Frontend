@@ -10,7 +10,7 @@ export default async function CartPage() {
         {/* Page Title */}
         <div className="mb-6">
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
-            🛒 My Cart
+             My Cart
           </h1>
           <p className="text-gray-600 mt-1">
             Review your items and place your order.

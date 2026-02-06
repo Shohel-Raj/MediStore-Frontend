@@ -1,13 +1,8 @@
-import { headers } from "next/headers";
 import Link from "next/link";
 import { sellerOrderService } from "@/services/seller/orderService";
+import UpdateOrderItemStatusButton from "@/components/seller/UpdateOrderItemStatusButton";
+import { toOrderStatus } from "../../../../../../types/orderStatus";
 
-interface Pagination {
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
-}
 
 interface Order {
   id: string;
@@ -26,14 +21,12 @@ interface Order {
 export default async function SellerOrdersPage({ searchParams }: { searchParams?: { page?: string } }) {
 
 const params =await searchParams;
-console.log(params)
-  const page = Number(searchParams?.page) || 1;
-  const limit = 20;
+  const page = Number(params?.page) || 1;
+  const limit = 1;
 
   const  data  = await sellerOrderService.getOrders(page,limit);
   const orders= data;
 
-console.log("from page",orders)
   if (!orders || !orders?.data.length || orders.success===false) {
     return (
       <div className="p-6">
@@ -70,17 +63,16 @@ console.log("from page",orders)
                 <td className="border px-4 py-2">{new Date(order.createdAt).toLocaleString()}</td>
                 <td className="border px-4 py-2 text-center space-x-2">
                   <Link
-                    href={`/seller/orders/${order.id}`}
+                    href={`/seller-dashboard/orders/${order.id}`}
                     className="px-2 py-1 bg-blue-50 text-blue-700 rounded hover:bg-blue-100"
                   >
                     View Details
                   </Link>
-                  <Link
-                    href={`/seller/orders/update-status/${order.id}`}
-                    className="px-2 py-1 bg-yellow-50 text-yellow-700 rounded hover:bg-yellow-100"
-                  >
-                    Update Status
-                  </Link>
+                 <UpdateOrderItemStatusButton
+      orderItemId={order.id}
+      currentStatus={toOrderStatus(order.status)}
+      
+    />
                 </td>
               </tr>
             ))}
@@ -94,9 +86,9 @@ console.log("from page",orders)
           {Array.from({ length: orders.pagination.totalPages }, (_, i) => (
             <Link
               key={i + 1}
-              href={`/seller/orders?page=${i + 1}`}
+              href={`/seller-dashboard/orders?page=${i + 1}`}
               className={`px-3 py-1 border rounded ${
-                currentPage === i + 1 ? "bg-gray-200" : "hover:bg-gray-100"
+                page === i + 1 ? "bg-gray-200" : "hover:bg-gray-100"
               }`}
             >
               {i + 1}

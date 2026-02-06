@@ -12,7 +12,6 @@ export const sellerOrderService = {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data?.error || "Failed to fetch orders");
-    console.log(data)
     return data;
   },
 
@@ -43,4 +42,8 @@ export const sellerOrderService = {
     if (!res.ok) throw new Error(data?.error || "Failed to fetch order");
     return data.data;
   },
+
+  
+
+ 
 };

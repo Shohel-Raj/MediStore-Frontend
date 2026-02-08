@@ -20,7 +20,6 @@ const AdminUserManagement = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // fetch all users
   const fetchUsers = async () => {
     setLoading(true);
     try {
@@ -40,7 +39,6 @@ const AdminUserManagement = () => {
     fetchUsers();
   }, []);
 
-  // update user role
   const handleRoleChange = async (userId: string, role: User["role"]) => {
     const confirm = await Swal.fire({
       title: "Change user role?",
@@ -66,7 +64,6 @@ const AdminUserManagement = () => {
     }
   };
 
-  // block/unblock user
   const handleStatusToggle = async (user: User) => {
     const action = user.status === "ACTIVE" ? "block" : "unblock";
 
@@ -94,7 +91,6 @@ const AdminUserManagement = () => {
     }
   };
 
-  // delete user
   const handleDeleteUser = async (userId: string) => {
     const confirm = await Swal.fire({
       title: "Delete user?",
@@ -130,68 +126,76 @@ const AdminUserManagement = () => {
     });
   };
 
+  const SkeletonRow = () => (
+    <TableRow>
+      {Array(5).fill(0).map((_, idx) => (
+        <TableCell key={idx}>
+          <div className="h-4 bg-gray-200 rounded animate-pulse w-full" />
+        </TableCell>
+      ))}
+    </TableRow>
+  );
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>User Management</CardTitle>
       </CardHeader>
       <CardContent>
-        {loading ? (
-          <p>Loading users...</p>
-        ) : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {users.map((user) => (
-                <TableRow key={user.id}>
-                  <TableCell>{user.name}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>
-                    <Select
-                      value={user.role}
-                      onValueChange={(value) => handleRoleChange(user.id, value as User["role"])}
-                    >
-                      <SelectTrigger className="w-32">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="ADMIN">ADMIN</SelectItem>
-                        <SelectItem value="SELLER">SELLER</SelectItem>
-                        <SelectItem value="USER">USER</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
-                  <TableCell>{user.status}</TableCell>
-                  <TableCell className="text-right flex gap-2 justify-end">
-                    <Button size="sm" onClick={() => handleViewDetails(user)}>View</Button>
-                    <Button
-                      size="sm"
-                      variant={user.status === "ACTIVE" ? "destructive" : "default"}
-                      onClick={() => handleStatusToggle(user)}
-                    >
-                      {user.status === "ACTIVE" ? "Block" : "Unblock"}
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      onClick={() => handleDeleteUser(user.id)}
-                    >
-                      Delete
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        )}
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {loading
+              ? Array(5).fill(0).map((_, idx) => <SkeletonRow key={idx} />)
+              : users.map((user) => (
+                  <TableRow key={user.id}>
+                    <TableCell>{user.name}</TableCell>
+                    <TableCell>{user.email}</TableCell>
+                    <TableCell>
+                      <Select
+                        value={user.role}
+                        onValueChange={(value) => handleRoleChange(user.id, value as User["role"])}
+                      >
+                        <SelectTrigger className="w-32">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="ADMIN">ADMIN</SelectItem>
+                          <SelectItem value="SELLER">SELLER</SelectItem>
+                          <SelectItem value="USER">USER</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                    <TableCell>{user.status}</TableCell>
+                    <TableCell className="text-right flex gap-2 justify-end">
+                      <Button size="sm" onClick={() => handleViewDetails(user)}>View</Button>
+                      <Button
+                        size="sm"
+                        variant={user.status === "ACTIVE" ? "destructive" : "default"}
+                        onClick={() => handleStatusToggle(user)}
+                      >
+                        {user.status === "ACTIVE" ? "Block" : "Unblock"}
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        onClick={() => handleDeleteUser(user.id)}
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+          </TableBody>
+        </Table>
       </CardContent>
     </Card>
   );

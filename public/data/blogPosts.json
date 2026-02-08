@@ -1,0 +1,110 @@
+[
+  {
+    "id": 1,
+    "title": "5 Tips for Safe OTC Medicine Use",
+    "excerpt": "Using over-the-counter (OTC) medicines safely is essential to prevent unwanted side effects and interactions. Always read the label carefully, follow the recommended dosage, and avoid mixing medications without consulting a healthcare professional. Store medicines in a cool, dry place and keep them out of reach of children. Be aware of expiry dates and avoid taking medicines past their expiration. Understanding active ingredients can help prevent accidental duplication of medication. These simple precautions ensure that OTC medicines are effective while minimizing potential risks to your health.",
+    "author": "Mohammed Shohel",
+    "date": "2026-02-01",
+    "category": "Health Tips",
+    "image": "https://i.postimg.cc/R0RX82kY/OTC_Medicine_Use.png"
+  },
+  {
+    "id": 2,
+    "title": "Top 10 Supplements for Boosting Immunity",
+    "excerpt": "Maintaining a strong immune system is crucial, and supplements can support your body when used correctly. Vitamins such as C, D, and E, along with minerals like zinc and selenium, play a significant role in immunity. Herbal supplements like echinacea and elderberry may also provide support during cold and flu seasons. It is important to follow recommended daily allowances and consult your healthcare provider, especially if you are taking other medications. A balanced diet, regular exercise, adequate sleep, and hydration are equally essential for overall immune health alongside supplementation.",
+    "author": "Jane Doe",
+    "date": "2026-01-28",
+    "category": "Supplements",
+    "image": "https://i.postimg.cc/KYNJVC6H/Supplements.jpg"
+  },
+  {
+    "id": 3,
+    "title": "Understanding Common Cold Remedies",
+    "excerpt": "The common cold is a viral infection with symptoms such as a runny nose, cough, and mild fever. OTC remedies can relieve symptoms but do not cure the infection itself. Decongestants, antihistamines, pain relievers, and soothing syrups can help reduce discomfort. Natural remedies such as warm fluids, honey, and rest may also support recovery. Knowing which remedies to use for specific symptoms can prevent misuse and reduce potential side effects. Always consult your pharmacist or doctor if symptoms worsen or persist beyond a week. Proper care helps you recover comfortably and safely.",
+    "author": "John Smith",
+    "date": "2026-01-25",
+    "category": "Health Tips",
+    "image": "https://i.postimg.cc/xdRt7BwF/Common_Cold_Remedies.jpg"
+  },
+  {
+    "id": 4,
+    "title": "How to Read Medicine Labels Correctly",
+    "excerpt": "Medicine labels contain critical information that ensures safe and effective use. Understanding dosage instructions, active ingredients, warnings, and expiration dates is essential. Labels often include recommended age groups, contraindications, and potential side effects. Pay attention to combination products to avoid accidentally taking the same active ingredient multiple times. Store medicines according to label instructions to preserve effectiveness. When in doubt, consult your pharmacist for clarification. Proper label reading helps prevent accidental overdoses, interactions with other medications, and health complications, making it a vital skill for anyone using prescription or OTC medicines.",
+    "author": "Mohammed Shohel",
+    "date": "2026-01-20",
+    "category": "Education",
+    "image": "https://i.postimg.cc/3wBn6zsf/Medicine_Labels.jpg"
+  },
+  {
+    "id": 5,
+    "title": "The Importance of Expiration Dates",
+    "excerpt": "Expiration dates indicate the time frame during which a medicine is expected to remain safe and effective. Using expired medicines can reduce efficacy and increase the risk of adverse effects. Always check the date before taking any medication, and dispose of expired products properly. Keep a routine of reviewing your medicine cabinet to ensure nothing is past its expiration. Expiration dates apply to both prescription and OTC medicines. Adhering to these dates protects your health and ensures the medicine performs as intended, reducing the risk of treatment failure or unexpected side effects.",
+    "author": "Jane Doe",
+    "date": "2026-01-18",
+    "category": "Health Tips",
+    "image": "https://i.postimg.cc/q7LjYWPQ/Importance_of_Expiration_Dates.jpg"
+  },
+  {
+    "id": 6,
+    "title": "Top 7 Pain Relievers: What You Need to Know",
+    "excerpt": "Pain relievers are widely used to manage headaches, muscle pain, and inflammation. Common options include acetaminophen, ibuprofen, aspirin, and naproxen, each with unique benefits and precautions. Dosage, timing, and frequency must be followed carefully to avoid side effects. Some medications can cause stomach irritation or affect liver and kidney function if overused. Combination medicines require extra attention to avoid duplicating active ingredients. Consulting a healthcare professional is recommended when using pain relievers for extended periods. Proper use ensures effective relief while minimizing health risks associated with overuse or misuse.",
+    "author": "John Smith",
+    "date": "2026-01-15",
+    "category": "Pain Relief",
+    "image": "https://i.postimg.cc/cJmXjPpF/Pain_Relievers.jpg"
+  },
+  {
+    "id": 7,
+    "title": "How to Store Medicines Safely at Home",
+    "excerpt": "Proper storage of medicines preserves their effectiveness and prevents accidents. Store medications in a cool, dry place away from direct sunlight. Keep them out of reach of children and pets. Avoid storing medicines in bathrooms or kitchens where humidity and heat can degrade products. Original packaging often includes storage instructions—follow them carefully. Do not mix different medicines in the same container to avoid confusion. Regularly check expiry dates and safely dispose of expired or unused medicines. Safe storage protects your family and ensures medications remain effective when needed.",
+    "author": "Mohammed Shohel",
+    "date": "2026-01-12",
+    "category": "Safety",
+    "image": "https://i.postimg.cc/fbKBF1GC/Store_Medicines_Safely_at_Home.jpg"
+  },
+  {
+    "id": 8,
+    "title": "Vitamins You Should Take Daily",
+    "excerpt": "Daily vitamins support overall health, filling nutritional gaps that may be missed in your diet. Essential vitamins include vitamin D for bone health, vitamin C for immunity, and B vitamins for energy metabolism. Minerals like calcium, iron, and magnesium are also important. Choosing a balanced multivitamin or individual supplements should consider your age, diet, and health conditions. Over-supplementation can be harmful, so follow recommended daily allowances. Consult your doctor before starting new supplements, especially if taking other medications. Consistent vitamin intake promotes long-term wellness and helps prevent deficiencies.",
+    "author": "Jane Doe",
+    "date": "2026-01-10",
+    "category": "Supplements",
+    "image": "https://i.postimg.cc/jjXZ9Bph/Vitamins_You_Should_Take_Daily.jpg"
+  },
+  {
+    "id": 9,
+    "title": "Managing Allergy Symptoms Effectively",
+    "excerpt": "Allergies can range from mild discomfort to severe reactions. Managing symptoms involves avoiding triggers when possible and using medications correctly. Antihistamines, nasal sprays, and eye drops are common remedies. Always read labels and follow dosage instructions carefully. Keeping track of environmental triggers and seasonal patterns can help prevent flare-ups. Natural remedies, like saline rinses and humidifiers, may also alleviate symptoms. Seek medical advice if reactions are severe, persistent, or worsening. Effective management improves quality of life, reduces discomfort, and helps prevent complications associated with untreated allergies.",
+    "author": "John Smith",
+    "date": "2026-01-08",
+    "category": "Allergies",
+    "image": "https://i.postimg.cc/KYNJVC6n/Allergy_Symptoms_Effectively.jpg"
+  },
+  {
+    "id": 10,
+    "title": "OTC Medicines vs Prescription Medicines",
+    "excerpt": "Understanding the difference between OTC and prescription medicines is vital for safe use. OTC medicines are available without a prescription and are generally safe when used as directed. Prescription medicines require a doctor’s authorization and are often used for more serious conditions. Dosage, side effects, and interactions differ between the two types. Using OTC medicines incorrectly or combining them with prescription medicines without guidance can be dangerous. Knowing when to consult a healthcare professional ensures safe and effective treatment. Educating yourself on these differences promotes better health outcomes.",
+    "author": "Mohammed Shohel",
+    "date": "2026-01-05",
+    "category": "Education",
+    "image": "https://i.postimg.cc/zfj0M4sK/OTC_Medicines_vs_Prescription_Medicines.jpg"
+  },
+  {
+    "id": 11,
+    "title": "5 Ways to Prevent Common Headaches",
+    "excerpt": "Headaches are common and can be triggered by stress, dehydration, poor posture, or diet. Preventive measures include staying hydrated, maintaining regular sleep patterns, and taking breaks from screens. Stress management techniques, such as meditation or exercise, can reduce tension headaches. Over-the-counter pain relievers may help, but should not be overused. Identifying triggers and avoiding them when possible helps prevent recurrence. Maintaining a healthy lifestyle, proper hydration, and ergonomic posture contributes to fewer headaches. Always consult a healthcare professional if headaches are severe or persistent.",
+    "author": "Jane Doe",
+    "date": "2026-01-02",
+    "category": "Pain Relief",
+    "image": "https://i.postimg.cc/q7LjYWPn/Ways_to_Prevent_Common_Headaches.jpg"
+  },
+  {
+    "id": 12,
+    "title": "Understanding Your Medicine Dosage",
+    "excerpt": "Taking the correct dosage of medicines ensures safety and effectiveness. Always read labels and instructions carefully. Use the correct measuring tools for liquids and follow timing guidelines. Avoid doubling doses if you miss one without consulting your pharmacist. Be aware of interactions with other medications, supplements, or foods. Track your medication schedule to maintain consistency. Incorrect dosing can reduce efficacy or cause side effects. Consulting healthcare professionals when unsure is always recommended. Proper dosage practices help maintain health, maximize benefits, and minimize risks associated with medications.",
+    "author": "John Smith",
+    "date": "2025-12-30",
+    "category": "Education",
+    "image": "https://i.postimg.cc/6Q0YSFkv/Understanding_Your_Medicine_Dosage.jpg"
+  }
+]

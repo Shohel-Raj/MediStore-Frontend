@@ -76,6 +76,11 @@ export const getDashboardUrl = (role: UserRole) => {
   if (role === "SELLER") return "/seller-dashboard";
   return "/dashboard";
 };
+export const getProfileUrl = (role: UserRole) => {
+  if (role === "ADMIN") return "/admin-dashboard/profile";
+  if (role === "SELLER") return "/seller-dashboard/profile";
+  return "/profile";
+};
 
 const Navbar = ({
   logo = {
@@ -280,7 +285,7 @@ const Navbar = ({
                     </div>
 
                     <Button asChild variant="outline">
-                      <Link href="/dashboard/profile">Profile</Link>
+                      <Link href={getProfileUrl(role ?? "user")}>Profile</Link>
                     </Button>
 
                     <Button asChild variant="outline">
@@ -354,7 +359,7 @@ function UserAvatarMenu({
         <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
-          <Link href="/dashboard/profile" className="flex items-center gap-2">
+          <Link href={getProfileUrl(user.role ?? "user")} className="flex items-center gap-2">
             <User className="h-4 w-4" />
             Profile
           </Link>

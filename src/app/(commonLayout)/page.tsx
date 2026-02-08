@@ -6,7 +6,8 @@ export default function Home() {
 
   return (
     <>
-    <HeroSlider/>
+      <HeroSlider/>
+    
       <h1>hello this is main</h1>
     </>
     

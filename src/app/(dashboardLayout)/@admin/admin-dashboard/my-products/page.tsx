@@ -3,16 +3,17 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { sellerProductServiceServer } from "@/services/product/getMyProducts.server";
-import SellerProductsTableClient from "@/components/seller/ProductsTable";
+import AdminProductsTableClient from "@/components/admin/ProductsTable";
 
 export const dynamic = "force-dynamic";
+
 interface Props {
   searchParams?: { page?: string; limit?: string };
 }
 
 export default async function MyProductsPage({ searchParams }: Props) {
-
-    const searchParam=await searchParams
+  // Parse page & limit from URL query, default to 1 & 10
+  const searchParam=await searchParams
   const page = parseInt(searchParam?.page || "1");
   const limit =parseInt(searchParam?.limit || "10");
 
@@ -27,14 +28,15 @@ export default async function MyProductsPage({ searchParams }: Props) {
   );
 
   const products = data?.data || [];
-const pagination = data?.pagination;
+  const pagination = data?.pagination;
+  
   return (
     <div className="w-11/12 mx-auto py-8 space-y-5">
       <div className="flex items-center justify-between gap-3">
         <h1 className="text-2xl font-bold">My Products</h1>
 
         <Button asChild>
-          <Link href="/seller-dashboard/create-product">Add Product</Link>
+          <Link href="/Admin-dashboard/create-product">Add Product</Link>
         </Button>
       </div>
 
@@ -44,7 +46,9 @@ const pagination = data?.pagination;
         <p className="text-muted-foreground">No products found.</p>
       ) : (
         <>
-        <SellerProductsTableClient products={products} />
+          {/* Products Table */}
+          <AdminProductsTableClient products={products} />
+
           {/* Pagination */}
           {pagination && (
             <div className="flex justify-center items-center gap-3 mt-6">
@@ -72,8 +76,6 @@ const pagination = data?.pagination;
             </div>
           )}
         </>
-        
-        
       )}
     </div>
   );

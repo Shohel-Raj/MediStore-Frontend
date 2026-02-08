@@ -18,11 +18,12 @@ import {
 import { Product } from "@/services/product/getMyProducts.server";
 import { sellerProductServiceClient } from "@/services/product/getMyProducts.client";
 
-
-export default function SellerProductsTableClient({
+export default function AdminProductsTableClient({
   products,
 }: {
   products: Product[];
+   
+ 
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -111,14 +112,14 @@ export default function SellerProductsTableClient({
               <TableCell className="text-right">
                 <div className="flex justify-end gap-2">
                   <Button asChild size="sm" variant="outline">
-                    <Link href={`/seller-dashboard/my-products/${product.id}`}>
+                    <Link href={`/admin-dashboard/my-products/${product.id}`}>
                       View
                     </Link>
                   </Button>
 
                   <Button asChild size="sm">
                     <Link
-                      href={`/seller-dashboard/my-products/${product.id}/edit`}
+                      href={`/admin-dashboard/my-products/${product.id}/edit`}
                     >
                       Update
                     </Link>
@@ -138,6 +139,8 @@ export default function SellerProductsTableClient({
           ))}
         </TableBody>
       </Table>
+
+      
     </div>
   );
 }

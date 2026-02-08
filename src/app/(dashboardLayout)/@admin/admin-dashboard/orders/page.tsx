@@ -55,7 +55,6 @@ const AdminOrderManagement = () => {
         credentials: "include",
       });
       const data = await res.json();
-      console.log(data)
       setOrders(data.data || []);
       setTotalPages(data.pagination.totalPages || 1);
       setCurrentPage(page);

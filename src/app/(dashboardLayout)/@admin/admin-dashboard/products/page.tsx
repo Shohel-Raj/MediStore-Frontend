@@ -65,7 +65,7 @@ const ProductManagement = () => {
 
   // Update product status
   const handleStatusChange = async (product: Product) => {
-    const newStatus = product.status === "ACTIVE" ? "INACTIVE" : "ACTIVE";
+    const newStatus = product.status === "ACTIVE" ? "BLOCK" : "ACTIVE";
     const confirm = await Swal.fire({
       title: "Change product status?",
       text: `Set status to ${newStatus}?`,
@@ -170,7 +170,7 @@ const ProductManagement = () => {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="ACTIVE">ACTIVE</SelectItem>
-                          <SelectItem value="INACTIVE">INACTIVE</SelectItem>
+                          <SelectItem value="BLOCK">BLOCK</SelectItem>
                         </SelectContent>
                       </Select>
                     </TableCell>

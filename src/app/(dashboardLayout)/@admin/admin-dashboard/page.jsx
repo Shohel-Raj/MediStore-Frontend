@@ -6,7 +6,6 @@ export default async function AdminDashboardPage() {
   const overviewRes = await adminServerService.getOverviewStats();
   const salesRes = await adminServerService.getMonthlySalesStats(2026);
 
-  console.log(salesRes)
 
 
   return (

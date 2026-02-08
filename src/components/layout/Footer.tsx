@@ -25,7 +25,7 @@ interface FooterProps {
 export function Footer({ className }: FooterProps) {
   return (
     <footer className={cn("border-t bg-background", className)}>
-      <div className="container mx-auto px-4 py-12">
+      <div className="w-11/12 md:w-10/12 mx-auto px-4 py-12">
 
 
 

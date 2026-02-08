@@ -149,7 +149,7 @@ const Navbar = ({
 
   return (
     <header className={cn("border-b bg-background", className)}>
-      <div className="container mx-auto flex items-center justify-between px-4 py-4">
+      <div className="w-11/12 md:w-10/12 mx-auto flex items-center justify-between px-4 py-4">
         {/* Logo */}
         <Logo />
 

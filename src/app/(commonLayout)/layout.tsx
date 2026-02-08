@@ -8,8 +8,11 @@ export default function CommonLayout({
 }) {
   return (
     <div>
-      <Navbar/>
-      <div className="min-h-screen">
+      <div className="fixed top-0 pb-50 left-0 right-0 z-50">
+        <Navbar/>
+      </div>
+      
+      <div className="min-h-screen pt-16">
         {children}
       </div>
       

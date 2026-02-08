@@ -5,7 +5,5 @@ export const authClient = createAuthClient({
   fetchOptions: {
     credentials: "include", // include cookies
   },
-  emailAndPassword: { 
-    enabled: true, 
-  },
+ 
 });

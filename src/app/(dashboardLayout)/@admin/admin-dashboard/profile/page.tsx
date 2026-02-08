@@ -53,13 +53,14 @@ export default function UserProfile() {
         currentPassword: currentPassword, // required
         revokeOtherSessions: true,
       });
-      console.log(data);
       // Only show success if no error was thrown
-      Swal.fire(
-        "Success",
-        "Your password has been updated successfully!",
-        "success",
-      );
+      if (data?.token) {
+        Swal.fire(
+          "Success",
+          "Your password has been updated successfully!",
+          "success",
+        );
+      }
 
       // Clear fields
       setCurrentPassword("");

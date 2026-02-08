@@ -32,18 +32,26 @@ interface Product {
   seller: Seller;
 }
 
+const PAGE_LIMIT = 10; // Number of products per page
+
 const ProductManagement = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
-  const fetchProducts = async () => {
+  // Fetch products with pagination
+  const fetchProducts = async (page: number = 1) => {
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/products`, {
-        credentials: "include",
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/products?page=${page}&limit=${PAGE_LIMIT}`,
+        { credentials: "include" }
+      );
       const data = await res.json();
       setProducts(data.data || []);
+      setTotalPages(data.pagination.totalPages || 1);
+      setCurrentPage(page);
     } catch (err) {
       console.error(err);
     } finally {
@@ -52,9 +60,10 @@ const ProductManagement = () => {
   };
 
   useEffect(() => {
-    fetchProducts();
+    fetchProducts(currentPage);
   }, []);
 
+  // Update product status
   const handleStatusChange = async (product: Product) => {
     const newStatus = product.status === "ACTIVE" ? "INACTIVE" : "ACTIVE";
     const confirm = await Swal.fire({
@@ -64,14 +73,13 @@ const ProductManagement = () => {
       showCancelButton: true,
       confirmButtonText: "Yes",
     });
-
     if (!confirm.isConfirmed) return;
 
     try {
       const result = await adminClientService.updateProductStatus(product.id, newStatus);
       if (result.success) {
         Swal.fire("Updated", "Product status updated", "success");
-        fetchProducts();
+        fetchProducts(currentPage);
       } else {
         Swal.fire("Error", result.message || "Failed to update status", "error");
       }
@@ -80,34 +88,11 @@ const ProductManagement = () => {
     }
   };
 
-//   const handleDeleteProduct = async (productId: string) => {
-//     const confirm = await Swal.fire({
-//       title: "Delete product?",
-//       text: "This action cannot be undone",
-//       icon: "warning",
-//       showCancelButton: true,
-//       confirmButtonText: "Yes, delete",
-//     });
-
-//     if (!confirm.isConfirmed) return;
-
-//     try {
-//       const result = await adminClientService.deleteProduct(productId);
-//       if (result.success) {
-//         Swal.fire("Deleted", "Product deleted successfully", "success");
-//         fetchProducts();
-//       } else {
-//         Swal.fire("Error", result.message || "Failed to delete product", "error");
-//       }
-//     } catch (err: any) {
-//       Swal.fire("Error", err.message || "Failed to delete product", "error");
-//     }
-//   };
-
+  // View product details
   const handleViewDetails = (product: Product) => {
-    const imagesHtml = product.images.map(
-      (img) => `<img src="${img}" class="max-w-25 mr-2 mb-2 rounded"/>`
-    ).join("");
+    const imagesHtml = product.images
+      .map((img) => `<img src="${img}" class="max-w-25 mr-2 mb-2 rounded"/>`)
+      .join("");
 
     Swal.fire({
       title: `${product.name} - Details`,
@@ -163,6 +148,14 @@ const ProductManagement = () => {
               ? Array(5)
                   .fill(0)
                   .map((_, idx) => <SkeletonRow key={idx} />)
+              : products.length === 0
+              ? (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center">
+                    No products found.
+                  </TableCell>
+                </TableRow>
+              )
               : products.map((product) => (
                   <TableRow key={product.id}>
                     <TableCell>{product.name}</TableCell>
@@ -177,7 +170,7 @@ const ProductManagement = () => {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="ACTIVE">ACTIVE</SelectItem>
-                          <SelectItem value="BLOCK">BLOCK</SelectItem>
+                          <SelectItem value="INACTIVE">INACTIVE</SelectItem>
                         </SelectContent>
                       </Select>
                     </TableCell>
@@ -187,18 +180,34 @@ const ProductManagement = () => {
                       <Button size="sm" onClick={() => handleViewDetails(product)}>
                         View
                       </Button>
-                      {/* <Button
-                        size="sm"
-                        variant="destructive"
-                        onClick={() => handleDeleteProduct(product.id)}
-                      >
-                        Delete
-                      </Button> */}
                     </TableCell>
                   </TableRow>
                 ))}
           </TableBody>
         </Table>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex justify-end items-center gap-2 mt-4">
+            <Button
+              size="sm"
+              disabled={currentPage === 1}
+              onClick={() => fetchProducts(currentPage - 1)}
+            >
+              Previous
+            </Button>
+            <span>
+              Page {currentPage} of {totalPages}
+            </span>
+            <Button
+              size="sm"
+              disabled={currentPage === totalPages}
+              onClick={() => fetchProducts(currentPage + 1)}
+            >
+              Next
+            </Button>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

@@ -45,7 +45,7 @@ const AdminOrderManagement = () => {
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const PAGE_LIMIT = 4; // number of orders per page
+  const PAGE_LIMIT = 10; 
 
   // Fetch orders with pagination
   const fetchOrders = async (page: number = 1) => {

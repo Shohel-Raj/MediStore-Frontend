@@ -19,15 +19,22 @@ interface User {
 const AdminUserManagement = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const PAGE_LIMIT = 10; // Users per page
 
-  const fetchUsers = async () => {
+  // Fetch users with pagination
+  const fetchUsers = async (page: number = 1) => {
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/users`, {
-        credentials: "include",
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/users?page=${page}&limit=${PAGE_LIMIT}`,
+        { credentials: "include" }
+      );
       const data = await res.json();
       setUsers(data.data || []);
+      setTotalPages(data.pagination.totalPages || 1);
+      setCurrentPage(page);
     } catch (err) {
       console.error(err);
     } finally {
@@ -36,7 +43,7 @@ const AdminUserManagement = () => {
   };
 
   useEffect(() => {
-    fetchUsers();
+    fetchUsers(currentPage);
   }, []);
 
   const handleRoleChange = async (userId: string, role: User["role"]) => {
@@ -52,10 +59,9 @@ const AdminUserManagement = () => {
 
     try {
       const result = await adminClientService.updateUserRole(userId, role);
-
       if (result.success) {
         Swal.fire("Updated", "User role updated", "success");
-        fetchUsers();
+        fetchUsers(currentPage);
       } else {
         Swal.fire("Error", result.message || "Failed to update role", "error");
       }
@@ -66,7 +72,6 @@ const AdminUserManagement = () => {
 
   const handleStatusToggle = async (user: User) => {
     const action = user.status === "ACTIVE" ? "block" : "unblock";
-
     const confirm = await Swal.fire({
       title: `Are you sure?`,
       text: `You want to ${action} this user`,
@@ -74,15 +79,16 @@ const AdminUserManagement = () => {
       showCancelButton: true,
       confirmButtonText: "Yes",
     });
-
     if (!confirm.isConfirmed) return;
 
     try {
-      const result = await adminClientService.blockOrUnblockUser(user.id, user.status === "ACTIVE" ? "BLOCK" : "ACTIVE");
-
+      const result = await adminClientService.blockOrUnblockUser(
+        user.id,
+        user.status === "ACTIVE" ? "BLOCK" : "ACTIVE"
+      );
       if (result.success) {
         Swal.fire("Success", `User ${action}ed`, "success");
-        fetchUsers();
+        fetchUsers(currentPage);
       } else {
         Swal.fire("Error", result.message || "Action failed", "error");
       }
@@ -99,15 +105,13 @@ const AdminUserManagement = () => {
       showCancelButton: true,
       confirmButtonText: "Yes, delete",
     });
-
     if (!confirm.isConfirmed) return;
 
     try {
       const result = await adminClientService.deleteUser(userId);
-
       if (result.success) {
         Swal.fire("Deleted", "User deleted successfully", "success");
-        fetchUsers();
+        fetchUsers(currentPage);
       } else {
         Swal.fire("Error", result.message || "Failed to delete user", "error");
       }
@@ -128,11 +132,13 @@ const AdminUserManagement = () => {
 
   const SkeletonRow = () => (
     <TableRow>
-      {Array(5).fill(0).map((_, idx) => (
-        <TableCell key={idx}>
-          <div className="h-4 bg-gray-200 rounded animate-pulse w-full" />
-        </TableCell>
-      ))}
+      {Array(5)
+        .fill(0)
+        .map((_, idx) => (
+          <TableCell key={idx}>
+            <div className="h-4 bg-gray-200 rounded animate-pulse w-full" />
+          </TableCell>
+        ))}
     </TableRow>
   );
 
@@ -154,7 +160,17 @@ const AdminUserManagement = () => {
           </TableHeader>
           <TableBody>
             {loading
-              ? Array(5).fill(0).map((_, idx) => <SkeletonRow key={idx} />)
+              ? Array(5)
+                  .fill(0)
+                  .map((_, idx) => <SkeletonRow key={idx} />)
+              : users.length === 0
+              ? (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center">
+                    No users found.
+                  </TableCell>
+                </TableRow>
+              )
               : users.map((user) => (
                   <TableRow key={user.id}>
                     <TableCell>{user.name}</TableCell>
@@ -162,7 +178,9 @@ const AdminUserManagement = () => {
                     <TableCell>
                       <Select
                         value={user.role}
-                        onValueChange={(value) => handleRoleChange(user.id, value as User["role"])}
+                        onValueChange={(value) =>
+                          handleRoleChange(user.id, value as User["role"])
+                        }
                       >
                         <SelectTrigger className="w-32">
                           <SelectValue />
@@ -176,7 +194,9 @@ const AdminUserManagement = () => {
                     </TableCell>
                     <TableCell>{user.status}</TableCell>
                     <TableCell className="text-right flex gap-2 justify-end">
-                      <Button size="sm" onClick={() => handleViewDetails(user)}>View</Button>
+                      <Button size="sm" onClick={() => handleViewDetails(user)}>
+                        View
+                      </Button>
                       <Button
                         size="sm"
                         variant={user.status === "ACTIVE" ? "destructive" : "default"}
@@ -196,6 +216,29 @@ const AdminUserManagement = () => {
                 ))}
           </TableBody>
         </Table>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex justify-end items-center gap-2 mt-4">
+            <Button
+              size="sm"
+              disabled={currentPage === 1}
+              onClick={() => fetchUsers(currentPage - 1)}
+            >
+              Previous
+            </Button>
+            <span>
+              Page {currentPage} of {totalPages}
+            </span>
+            <Button
+              size="sm"
+              disabled={currentPage === totalPages}
+              onClick={() => fetchUsers(currentPage + 1)}
+            >
+              Next
+            </Button>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

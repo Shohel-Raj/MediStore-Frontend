@@ -45,7 +45,7 @@ export async function getUserData(): Promise<UserInfo | null> {
      const user: UserInfo = {
       name: "MediStore User",
       email:  "user@medistore.com",
-      image:  null,
+      image:  "",
       role:  "USER",
     };
     return user;

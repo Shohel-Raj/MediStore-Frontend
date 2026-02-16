@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 
-import { Menu, LogOut, User, LayoutDashboard } from "lucide-react";
+import { Menu, LogOut, User,  } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -37,9 +36,9 @@ import {
 import Logo from "../logo/logo";
 import { UserRole } from "../../../types/role.type";
 import { authClient } from "@/lib/auth-client";
-import { SessionUser } from "../../../types/sessionUser";
 import { toast } from "sonner";
 import CartIconButton from "../cart/CartIconButton";
+import { UserType } from "../../../types/UserType";
 
 interface MenuItem {
   title: string;
@@ -109,7 +108,7 @@ const Navbar = ({
   const { data, isPending } = authClient.useSession();
 
   // ✅ real session user
-  const sessionUser: SessionUser = data?.user;
+  const sessionUser = data?.user as UserType;
 
   // if you store role inside session user
   const role = (sessionUser?.role as UserRole) ?? undefined;

@@ -32,7 +32,7 @@ import { toast } from "sonner";
 
 export function DashboardTopbar({
   user,
-  onLogout
+  
 }: {
   user: {
     name?: string;
@@ -40,7 +40,6 @@ export function DashboardTopbar({
     image?: string;
     role: UserRole;
   };
-  onLogout: () => Promise<void> | void
 }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -66,9 +65,7 @@ export function DashboardTopbar({
 
   const handleLogout = async () => {
      try {
-          await authClient.signOut();
-    
-          if (onLogout) await onLogout();
+         const res= await authClient.signOut();
           router.push("/");
           router.refresh();
         } catch (err) {

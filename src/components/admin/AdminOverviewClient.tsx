@@ -21,39 +21,23 @@ interface Props {
   overview: OverviewStats;
 }
 
-const stats = [
-  {
-    title: "Total Users",
-    key: "totalUsers",
-    icon: Users,
-  },
-  {
-    title: "Customers",
-    key: "totalCustomers",
-    icon: Users,
-  },
-  {
-    title: "Sellers",
-    key: "totalSellers",
-    icon: Store,
-  },
-  {
-    title: "Products",
-    key: "totalProducts",
-    icon: Package,
-  },
-  {
-    title: "Orders",
-    key: "totalOrders",
-    icon: ShoppingCart,
-  },
-  {
-    title: "Revenue",
-    key: "totalRevenue",
-    icon: DollarSign,
-    isMoney: true,
-  },
-] as const;
+// Define type for stat items
+interface StatItem {
+  title: string;
+  key: keyof OverviewStats;
+  icon: React.ComponentType<{ className?: string }>;
+  isMoney?: boolean;
+}
+
+// Stats array
+const stats: StatItem[] = [
+  { title: "Total Users", key: "totalUsers", icon: Users },
+  { title: "Customers", key: "totalCustomers", icon: Users },
+  { title: "Sellers", key: "totalSellers", icon: Store },
+  { title: "Products", key: "totalProducts", icon: Package },
+  { title: "Orders", key: "totalOrders", icon: ShoppingCart },
+  { title: "Revenue", key: "totalRevenue", icon: DollarSign, isMoney: true },
+];
 
 export default function AdminOverviewClient({ overview }: Props) {
   return (
@@ -69,13 +53,11 @@ export default function AdminOverviewClient({ overview }: Props) {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map(({ title, key, icon: Icon, isMoney }) => (
-          <Card key={key}>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">
-                {title}
-              </CardTitle>
+          <Card key={key} className="hover:shadow-lg transition-shadow">
+            <CardHeader className="flex items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium">{title}</CardTitle>
               <Icon className="h-5 w-5 text-muted-foreground" />
             </CardHeader>
 

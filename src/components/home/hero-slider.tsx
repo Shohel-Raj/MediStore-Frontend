@@ -78,7 +78,7 @@ export default function HeroSlider() {
   return (
     <section className="w-full">
       <Carousel
-        setApi={setApi}
+        // setApi={setApi}
         opts={{ loop: true }}
         plugins={[autoplay.current]}
         className="relative w-full"

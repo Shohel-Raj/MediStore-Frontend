@@ -8,10 +8,10 @@ import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 
 export default function VerifyEmailPage() {
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams(); // client-side
   const router = useRouter();
 
-  const token = searchParams.get("token");
+  const token = searchParams?.get("token") ?? "";
 
   const [loading, setLoading] = React.useState(true);
   const [success, setSuccess] = React.useState<boolean | null>(null);
@@ -27,9 +27,9 @@ export default function VerifyEmailPage() {
       try {
         setLoading(true);
 
-        const { error } = await authClient.verifyEmail({
-          token,
-        });
+        const { error } = await authClient.verifyEmail({ query: {
+        token: token
+    } });
 
         if (error) {
           toast.error(error.message || "Email verification failed");
@@ -42,7 +42,8 @@ export default function VerifyEmailPage() {
 
         // redirect to login after success
         setTimeout(() => router.push("/login"), 1500);
-      } catch {
+      } catch (err) {
+        console.error(err);
         setSuccess(false);
       } finally {
         setLoading(false);
@@ -61,9 +62,9 @@ export default function VerifyEmailPage() {
           {loading ? (
             <Loader2 className="h-10 w-10 animate-spin" />
           ) : success ? (
-            <CheckCircle2 className="h-10 w-10" />
+            <CheckCircle2 className="h-10 w-10 text-green-500" />
           ) : (
-            <XCircle className="h-10 w-10" />
+            <XCircle className="h-10 w-10 text-red-500" />
           )}
         </div>
 
@@ -76,7 +77,10 @@ export default function VerifyEmailPage() {
         </p>
 
         {!loading && !success && (
-          <Button className="mt-6 w-full" onClick={() => router.push("/login")}>
+          <Button
+            className="mt-6 w-full"
+            onClick={() => router.push("/login")}
+          >
             Back to Login
           </Button>
         )}

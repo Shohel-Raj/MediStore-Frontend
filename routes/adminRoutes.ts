@@ -18,6 +18,7 @@ export const adminRoutes: Route[] = [
       { title: "Manage Orders", url: "/admin-dashboard/orders", icon: ClipboardList },
       { title: "Add Product", url: "/admin-dashboard/create-product", icon: PlusIcon },
       { title: "My Product", url: "/admin-dashboard/my-products", icon: Package },
+      { title: "Profile", url: "/admin-dashboard/profile", icon: Package },
       // { title: "Advertisements", url: "/admin-dashboard/ads", icon: Megaphone },
     ],
   },

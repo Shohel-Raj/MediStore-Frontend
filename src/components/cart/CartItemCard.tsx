@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import CartItemActions from "./CartItemActions";
 
 export default function CartItemCard({ item }: { item: any }) {
@@ -15,7 +14,6 @@ export default function CartItemCard({ item }: { item: any }) {
         <img
           src={product?.image || "/placeholder.png"}
           alt={product?.name || "product"}
-          fill
           className="object-cover"
         />
       </div>

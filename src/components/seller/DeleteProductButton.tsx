@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { sellerProductService } from "@/services/product/getMyProducts.server";
+import { sellerProductServiceClient } from "@/services/product/getMyProducts.client";
 
 export default function DeleteProductButton({ productId }: { productId: string }) {
   const router = useRouter();
@@ -16,7 +16,7 @@ export default function DeleteProductButton({ productId }: { productId: string }
     if (!ok) return;
 
     startTransition(async () => {
-      const { error } = await sellerProductService.deleteProductById(productId);
+      const { error } = await sellerProductServiceClient.deleteProductById(productId);
 
       if (error) {
         toast.error(error.message);

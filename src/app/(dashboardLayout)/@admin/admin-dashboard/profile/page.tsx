@@ -3,6 +3,7 @@
 import { authClient } from "@/lib/auth-client";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import { UserType } from "../../../../../../types/UserType";
 
 export default function UserProfile() {
   const { data: session, isPending, error } = authClient.useSession();
@@ -27,8 +28,7 @@ export default function UserProfile() {
     );
   }
 
-  const user = session?.user;
-
+  const user = session?.user as UserType;
   const handlePasswordUpdate = async () => {
     if (!currentPassword || !newPassword || !confirmPassword) {
       Swal.fire("Error", "Please fill in all fields", "error");

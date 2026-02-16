@@ -38,6 +38,7 @@ export default function LoginForm() {
   const [showResend, setShowResend] = React.useState(false);
   const [resendLoading, setResendLoading] = React.useState(false);
 
+
   const handleGoogleLogin = async () => {
     try {
       setIsLoading(true);
@@ -107,23 +108,21 @@ export default function LoginForm() {
         password,
         callbackURL: window.location.origin,
       });
-
       if (error) {
         toast.error(error.message || "Invalid credentials");
         return;
       }
-
       // ✅ email verification check
-      const emailVerified = data?.user?.emailVerified;
+      // const emailVerified = data?.user?.emailVerified;
 
-      if (emailVerified === false) {
-        toast.error("Please verify your email first.");
-        setShowResend(true); // show resend button
-        return; // ❌ don't redirect
-      }
+      // if (emailVerified === false) {
+      //   toast.error("Please verify your email first.");
+      //   setShowResend(true); // show resend button
+      //   return; // ❌ don't redirect
+      // }
 
-      toast.success("Login successful");
-      router.push("/dashboard");
+      // toast.success("Login successful");
+      // router.push("/");
     } catch {
       toast.error("Something went wrong");
     } finally {

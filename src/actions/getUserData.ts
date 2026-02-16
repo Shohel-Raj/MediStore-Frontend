@@ -16,7 +16,7 @@ export async function getUserData(): Promise<UserInfo | null> {
   try {
     const cookieStore = await cookies();
 
-    const token = cookieStore.get("better-auth.session_token");
+    const token = cookieStore.get("__Secure-better-auth.session_token");
 
     if (!token) return null;
 
@@ -28,7 +28,7 @@ export async function getUserData(): Promise<UserInfo | null> {
     });
     const CookieUser = await res.json();
     // session.data?.user can be undefined
-    const userData = CookieUser.user;
+    const userData = CookieUser?.user;
     if (!userData) return null;
 
     // Map to our UserInfo type

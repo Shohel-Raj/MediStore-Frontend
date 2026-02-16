@@ -2,6 +2,7 @@
 
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
+import { UserType } from "../../../../../types/UserType";
 
 export default function UserDashboard() {
   const { data: session, isPending, error } = authClient.useSession();
@@ -22,7 +23,7 @@ export default function UserDashboard() {
     );
   }
 
-  const user = session?.user;
+  const user = session?.user as UserType;
 
   return (
     <div className="p-6 space-y-6">

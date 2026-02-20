@@ -51,7 +51,7 @@ const AdminOrderManagement = () => {
   const fetchOrders = async (page: number = 1) => {
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/orders?page=${page}&limit=${PAGE_LIMIT}`, {
+      const res = await fetch(`/api/v1/admin/orders?page=${page}&limit=${PAGE_LIMIT}`, {
         credentials: "include",
       });
       const data = await res.json();

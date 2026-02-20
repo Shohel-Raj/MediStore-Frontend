@@ -45,7 +45,7 @@ const ProductManagement = () => {
     setLoading(true);
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/products?page=${page}&limit=${PAGE_LIMIT}`,
+        `/api/v1/admin/products?page=${page}&limit=${PAGE_LIMIT}`,
         { credentials: "include" }
       );
       const data = await res.json();

@@ -28,7 +28,7 @@ export const adminClientService = {
   // ================= USERS =================
   updateUserRole: async (userId: string, role: string) => {
     return fetchClient(
-      `${API_URL}/api/v1/admin/users/${userId}/role`,
+      `/api/v1/admin/users/${userId}/role`,
       {
         method: "PATCH",
         body: JSON.stringify({ role }),
@@ -38,7 +38,7 @@ export const adminClientService = {
 
   blockOrUnblockUser: async (userId: string, status: string) => {
     return fetchClient(
-      `${API_URL}/api/v1/admin/users/${userId}/block`,
+      `/api/v1/admin/users/${userId}/block`,
       {
         method: "PATCH",
         body: JSON.stringify({ status }),
@@ -48,7 +48,7 @@ export const adminClientService = {
 
   deleteUser: async (userId: string) => {
     return fetchClient(
-      `${API_URL}/api/v1/admin/users/${userId}`,
+      `/api/v1/admin/users/${userId}`,
       {
         method: "DELETE",
       }
@@ -61,7 +61,7 @@ export const adminClientService = {
     status: string
   ) => {
     return fetchClient(
-      `${API_URL}/api/v1/admin/products/${productId}/status`,
+      `/api/v1/admin/products/${productId}/status`,
       {
         method: "PATCH",
         body: JSON.stringify({ status }),
@@ -71,7 +71,7 @@ export const adminClientService = {
 
   deleteProduct: async (productId: string) => {
     return fetchClient(
-      `${API_URL}/api/v1/admin/products/${productId}`,
+      `/api/v1/admin/products/${productId}`,
       {
         method: "DELETE",
       }
@@ -84,7 +84,7 @@ export const adminClientService = {
     status: OrderStatus
   ) => {
     return fetchClient(
-      `${API_URL}/api/v1/admin/orders/${orderId}/status`,
+      `/api/v1/admin/orders/${orderId}/status`,
       {
         method: "PATCH",
         body: JSON.stringify({ status }),

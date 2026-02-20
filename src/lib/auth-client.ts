@@ -2,7 +2,7 @@ import { createAuthClient } from "better-auth/react";
 
 export const authClient = createAuthClient({
   baseURL: typeof window !== "undefined" ? window.location.origin : "",
-  // baseURL: "http://localhost:5000",
+  // baseURL: "https://medistore-server-hazel.vercel.app",
   fetchOptions: {
     credentials: "include",
   },

@@ -106,7 +106,7 @@ export default function LoginForm() {
       const { data, error } = await authClient.signIn.email({
         email,
         password,
-        callbackURL: window.location.origin,
+        callbackURL:window.location.origin,
       });
       if (error) {
         toast.error(error.message || "Invalid credentials");

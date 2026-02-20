@@ -31,7 +31,7 @@ export const sellerProductServiceClient = {
     params?: Record<string, string | number | boolean>,
   ): Promise<ServiceResult<{ data: Product[]; pagination?: Pagination }>> {
     try {
-      const url = new URL(`${API_URL}/api/v1/seller/medicines`);
+      const url = new URL(`/api/v1/seller/medicines`);
 
       // Append query params if provided
       if (params) {
@@ -65,7 +65,7 @@ export const sellerProductServiceClient = {
   async deleteProductById(productId: string): Promise<ServiceResult<unknown>> {
     try {
       const res = await fetch(
-        `${API_URL}/api/v1/seller/medicines/${productId}`,
+        `/api/v1/seller/medicines/${productId}`,
         {
           method: "DELETE",
           credentials: "include", // sends cookies from browser
@@ -94,7 +94,7 @@ export const sellerProductServiceClient = {
   ): Promise<ServiceResult<unknown>> {
     try {
       const res = await fetch(
-        `${API_URL}/api/v1/seller/medicines/${productId}`,
+        `/api/v1/seller/medicines/${productId}`,
         {
           method: "PUT",
           credentials: "include",
@@ -122,7 +122,7 @@ export const sellerProductServiceClient = {
   async getProductById(productId: string): Promise<ServiceResult<unknown>> {
     try {
       const res = await fetch(
-        `${API_URL}/api/v1/seller/medicines/${productId}`,
+        `/api/v1/seller/medicines/${productId}`,
         {
           method: "GET",
           credentials: "include",

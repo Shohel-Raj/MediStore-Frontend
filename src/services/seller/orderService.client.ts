@@ -1,6 +1,5 @@
 import { OrderStatus } from "../../../types/orderStatus";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const sellerOrderServiceClient = {
   updateOrderItemStatus: async (
@@ -8,7 +7,7 @@ export const sellerOrderServiceClient = {
     status: OrderStatus
   ) => {
     const res = await fetch(
-      `${API_URL}/api/v1/order/seller/order-items/${orderItemId}/status`,
+      `/api/v1/order/seller/order-items/${orderItemId}/status`,
       {
         method: "PATCH",
         headers: {

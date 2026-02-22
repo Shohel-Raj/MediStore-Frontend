@@ -6,7 +6,7 @@ import React from "react";
 export default async function CartPage() {
   return (
     <div className="min-h-[calc(100vh-80px)] ">
-      <div className="mx-auto max-w-6xl pt-8">
+      <div className="mx-auto w-11/12 md:w-10/12 pt-8">
         {/* Page Title */}
         <div className="mb-6">
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900">

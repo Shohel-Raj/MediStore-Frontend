@@ -9,7 +9,7 @@ type Product = {
   dosageForm?: string;
   strength?: string;
   price: number;
-  discountPrice?: number | null;   // allow null explicitly
+  discountPrice?: number | null;
   stock: number;
   image?: string | null;
 };
@@ -32,7 +32,6 @@ const ProductCard: React.FC<Props> = ({ product }) => {
     image,
   } = product;
 
-  // Safe discount check
   const hasDiscount =
     discountPrice != null && discountPrice > 0 && discountPrice < price;
 
@@ -42,14 +41,18 @@ const ProductCard: React.FC<Props> = ({ product }) => {
   return (
     <Link
       href={`/all-medicine/${id}`}
-      className={`
-        group relative flex flex-col overflow-hidden rounded-2xl bg-white 
-        border border-gray-200 hover:border-gray-300 
-        transition-all duration-300 hover:shadow-[0_8px_30px_-12px_rgba(0,0,0,0.08)]
-      `}
+      className="
+        group relative flex flex-col overflow-hidden rounded-2xl
+        bg-background
+        border border-border
+        hover:border-border
+        transition-all duration-300
+        hover:shadow-[0_8px_30px_-12px_rgba(0,0,0,0.08)]
+        dark:hover:shadow-[0_8px_30px_-12px_rgba(0,0,0,0.6)]
+      "
     >
       {/* Image Section */}
-      <div className="relative aspect-4/3 overflow-hidden bg-gray-50">
+      <div className="relative aspect-4/3 overflow-hidden bg-muted">
         {image && (image.startsWith("http") || image.startsWith("/")) ? (
           <img
             src={image}
@@ -58,7 +61,7 @@ const ProductCard: React.FC<Props> = ({ product }) => {
             loading="lazy"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center text-gray-300 text-sm">
+          <div className="flex h-full w-full items-center justify-center text-muted-foreground text-sm">
             No image
           </div>
         )}
@@ -74,13 +77,13 @@ const ProductCard: React.FC<Props> = ({ product }) => {
       {/* Content */}
       <div className="flex flex-1 flex-col p-5">
         {/* Product Name */}
-        <h3 className="mb-1.5 text-lg font-medium leading-tight text-gray-900 line-clamp-2">
+        <h3 className="mb-1.5 text-lg font-medium leading-tight text-foreground line-clamp-2">
           {name}
         </h3>
 
         {/* Secondary info */}
         {(manufacturer || dosageForm || strength) && (
-          <p className="mb-3 text-xs text-gray-500">
+          <p className="mb-3 text-xs text-muted-foreground">
             {manufacturer}
             {manufacturer && (dosageForm || strength) ? " • " : ""}
             {dosageForm}
@@ -89,19 +92,21 @@ const ProductCard: React.FC<Props> = ({ product }) => {
           </p>
         )}
 
-        {/* Description (optional) */}
+        {/* Description */}
         {description && (
-          <p className="mb-4 text-sm text-gray-600 line-clamp-2">{description}</p>
+          <p className="mb-4 text-sm text-muted-foreground line-clamp-2">
+            {description}
+          </p>
         )}
 
         {/* Price area */}
         <div className="mt-auto flex items-end gap-2.5">
-          <span className="text-2xl font-semibold text-gray-900">
-            ${displayPrice.toFixed(2)}
+          <span className="text-2xl font-semibold text-foreground">
+            ৳ {displayPrice.toFixed(2)}
           </span>
 
           {hasDiscount && (
-            <span className="text-sm text-gray-400 line-through">
+            <span className="text-sm text-muted-foreground line-through">
               ৳ {price.toFixed(2)}
             </span>
           )}
@@ -113,8 +118,8 @@ const ProductCard: React.FC<Props> = ({ product }) => {
             mt-3 inline-flex w-fit items-center rounded-full px-2.5 py-0.5 text-xs font-medium
             ${
               isOutOfStock
-                ? "bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/20"
-                : "bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20"
+                ? "bg-red-500/10 text-red-600 dark:text-red-400"
+                : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
             }
           `}
         >

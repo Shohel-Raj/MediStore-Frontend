@@ -40,7 +40,7 @@ export default async function ProductDetailsPage({
 
   return (
     <div className="min-h-screen bg-linear-to-b from-[#F9FAFB] to-white">
-      <div className="max-w-6xl mx-auto px-4 md:px-6 py-8">
+      <div className="w-11/12 md:w-10/12 mx-auto px-4 md:px-6 py-8">
         {/* Top Bar */}
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">

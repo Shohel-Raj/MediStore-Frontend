@@ -13,7 +13,7 @@ export default async function Home() {
 
       {/* Latest Products */}
       <ProductSection
-        products={latest?.data ?? []}
+        products={latest ?? []}
         fallbackTitle="Latest Arrivals in Our Store"
         fallbackSubtitle="Explore the newest additions to our healthcare and wellness collection. Stay ahead with the latest medicines, supplements, and health essentials curated for your daily needs."
       />
@@ -22,7 +22,7 @@ export default async function Home() {
       {/* Discounted Products */}
       <section className="py-16 bg-secondary dark:bg-secondary/20 transition-colors">
         <ProductSection
-          products={discounted?.data ?? []}
+          products={discounted ?? []}
           fallbackTitle="Exclusive Discounts You Can't Miss"
           fallbackSubtitle="Grab these limited-time offers and save on a wide variety of medicines and health products. Perfect chance to stock up on essentials while enjoying significant savings."
         />
@@ -30,7 +30,7 @@ export default async function Home() {
 
       {/* Top Selling Products */}
       <ProductSection
-        products={topSelling?.data ?? []}
+        products={topSelling ?? []}
         fallbackTitle="Our Most Popular Products"
         fallbackSubtitle="These are the top-selling items loved by our customers. Check out what’s trending in health and wellness, and discover why these products are consistently in demand."
       />

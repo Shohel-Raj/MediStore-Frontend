@@ -27,7 +27,7 @@ export default function AddToCartButton({
       setLoading(true);
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/cart/add`,
+        `/api/v1/cart/add`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

@@ -22,7 +22,7 @@ export default function CartItemActions({
       setQty(newQty);
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/cart/item/${itemId}`,
+        `/api/v1/cart/item/${itemId}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -68,7 +68,7 @@ export default function CartItemActions({
       setLoading(true);
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/cart/item/${itemId}`,
+        `/api/v1/cart/item/${itemId}`,
         {
           method: "DELETE",
           credentials: "include",

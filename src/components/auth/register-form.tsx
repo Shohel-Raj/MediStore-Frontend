@@ -72,13 +72,14 @@ export default function RegisterForm() {
    * - no redirect on failure
    * -----------------------------
    */
+  
   const handleGoogleRegister = async () => {
     try {
       setIsLoading(true);
 
       const { error } = await authClient.signIn.social({
         provider: "google",
-        callbackURL: `${window.location.origin}/dashboard`,
+        callbackURL: window.location.origin,
       });
 
       if (error) {

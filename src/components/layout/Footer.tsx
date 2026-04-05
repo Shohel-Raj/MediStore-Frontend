@@ -14,27 +14,29 @@ import {
   Mail,
   Phone,
   MapPin,
-
 } from "lucide-react";
 import Logo from "../logo/logo";
+
 
 interface FooterProps {
   className?: string;
 }
 
+
+
 export function Footer({ className }: FooterProps) {
+
+
+;
   return (
     <footer className={cn("border-t bg-background", className)}>
       <div className="w-11/12 md:w-10/12 mx-auto px-4 py-12">
-
-
-
         {/* Main Footer */}
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <Logo/>
+              <Logo />
             </div>
 
             <p className="text-sm text-muted-foreground leading-relaxed">
@@ -71,11 +73,13 @@ export function Footer({ className }: FooterProps) {
               For Users
             </h3>
             <ul className="space-y-2 text-sm">
-              <FooterLink href="/dashboard">Dashboard</FooterLink>
+              <FooterLink href='#'>
+                Dashboard
+              </FooterLink>
               <FooterLink href="/profile">My Profile</FooterLink>
               <FooterLink href="/orders">My Orders</FooterLink>
-              <FooterLink href="/wishlist">Wishlist</FooterLink>
-              <FooterLink href="/support">Support</FooterLink>
+              {/* <FooterLink href="/wishlist">Wishlist</FooterLink>
+              <FooterLink href="/support">Support</FooterLink> */}
             </ul>
           </div>
 
@@ -160,13 +164,7 @@ function FooterLink({
   );
 }
 
-function SocialIcon({
-  href,
-  icon,
-}: {
-  href: string;
-  icon: React.ReactNode;
-}) {
+function SocialIcon({ href, icon }: { href: string; icon: React.ReactNode }) {
   return (
     <Button asChild size="icon" variant="outline" className="rounded-full">
       <Link href={href} aria-label="social link">

@@ -54,7 +54,7 @@ export default function CheckoutButton({
       setLoading(true);
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/order/checkout`,
+        `/api/v1/order/checkout`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

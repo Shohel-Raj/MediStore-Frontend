@@ -1,4 +1,4 @@
-// home.server.ts
+"use server";
 
 /**
  * ==============================
@@ -19,8 +19,6 @@ export type Product = {
   image?: string | null;
 };
 
-
-
 export type HomeData = {
   latest: Product[];
   discounted: Product[];
@@ -38,7 +36,7 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL as string;
 
 // Revalidate every 5 minutes (good for landing page)
 const fetchOptions: RequestInit & { next?: { revalidate: number } } = {
-  next: { revalidate: 300 },
+  next: { revalidate: 180 },
 };
 
 /**
@@ -53,21 +51,26 @@ async function fetchFromAPI<T>(endpoint: string): Promise<T> {
 
     if (!res.ok) {
       console.error(`API Error: ${endpoint}`, res.status);
-      return [] as T;
+      return [] as unknown as T;
     }
 
-    const data = await res.json();
-    return data as T;
+    const json = await res.json();
+
+    // unwrap .data if present
+    if ("data" in json) {
+      return json.data as T;
+    }
+
+    return json as T;
   } catch (error) {
     console.error(`Fetch failed: ${endpoint}`, error);
-    return [] as T;
+    return [] as unknown as T;
   }
 }
 
 /**
  * ==============================
  * Section Fetchers
- * (kept separate for flexibility)
  * ==============================
  */
 

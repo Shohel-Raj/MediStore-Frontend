@@ -8,7 +8,7 @@ import { OrderStatus } from "../../../types/orderStatus";
 export const adminServerService = {
   getOverviewStats: async () => {
     const cookieStore = await cookies();
-    const res = await fetch(`/api/v1/admin/stats/overview`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/stats/overview`, {
       headers: {
         Cookie: cookieStore.toString(),
       },
@@ -21,7 +21,7 @@ export const adminServerService = {
   getMonthlySalesStats: async (year: number) => {
     const cookieStore = await cookies();
     const res = await fetch(
-      `/api/v1/admin/stats/sales/monthly?year=${year}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/stats/sales/monthly?year=${year}`,
       {
          headers: {
       Cookie: cookieStore.toString(),
@@ -43,7 +43,7 @@ export const adminServerService = {
       ...(search && { search }),
     });
 
-    const res = await fetch(`/api/v1/admin/users?${params}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/users?${params}`, {
        headers: {
       Cookie: cookieStore.toString(),
     },
@@ -68,7 +68,7 @@ export const adminServerService = {
       ...(status && { status }),
     });
 const cookieStore = await cookies();
-    const res = await fetch(`/api/v1/admin/products?${params}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/products?${params}`, {
       
          headers: {
       Cookie: cookieStore.toString(),
@@ -88,7 +88,7 @@ const cookieStore = await cookies();
       ...(status && { status }),
     });
 const cookieStore = await cookies();
-    const res = await fetch(`/api/v1/admin/orders?${params}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/orders?${params}`, {
       
          headers: {
       Cookie: cookieStore.toString(),

@@ -21,7 +21,7 @@ export default function CartIconButton() {
       setLoading(true);
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/cart/me`,
+        `/api/v1/cart/me`,
         {
           method: "GET",
           credentials: "include",
